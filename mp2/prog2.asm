@@ -37,9 +37,9 @@ EVALUATE
 ; Go to FINISH once an '=' sign has been typed in
 ; Uses R1 and R2 to check for '='
 INPUT 
-;	GETC				; Get char into R0
-;    OUT					; Echo back char typed
-IN
+	GETC				; Get char into R0
+    OUT					; Echo back char typed
+	;Same thing as IN 
 TEST_EQUALS
 	; Check for '='
 	LD R1, ASCII_VAL_NEG_EQUALS
