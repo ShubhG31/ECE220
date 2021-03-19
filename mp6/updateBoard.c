@@ -59,7 +59,7 @@ void updateBoard(int* board, int boardRowSize, int boardColSize) {
            else if(*(board+ boardColSize*row +col)==0 && liveN==3){
                 *(newboard + boardColSize*row + col) = 1;
             }
-            else{
+            else if(liveN<2 || liveN>3){
                 *(newboard + boardColSize*row + col) = 0;
             }
         }
