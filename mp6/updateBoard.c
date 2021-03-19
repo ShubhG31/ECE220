@@ -46,7 +46,7 @@ void updateBoard(int* board, int boardRowSize, int boardColSize) {
     for(int row = 0; row<=boardRowSize-1; row++ ){
         for(int col=0; col <= boardColSize-1; col++){
             liveN = countLiveNeighbor(board, boardRowSize, boardColSize, row, col);
-            if(liveN==2 || liveN==3 && *(board+ boardColSize*row +col)==1){
+            if((liveN==2 || liveN==3) && *(board+ boardColSize*row +col)==1){
                 *(newboard + boardColSize*row + col) = 1;
             }
            else if(*(board+ boardColSize*row +col)==0 && liveN==3){
