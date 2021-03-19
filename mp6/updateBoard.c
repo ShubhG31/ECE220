@@ -46,6 +46,7 @@ void updateBoard(int* board, int boardRowSize, int boardColSize) {
    
     for(int i =0; i<= boardRowSize-1; i++){
         for(int j =0; j<= boardColSize-1; j++){
+            *(newboard+boardColSize*i +j) =0;
             *(newboard + boardColSize*i +j)= *(board + boardColSize*i +j);
         }
     } 
