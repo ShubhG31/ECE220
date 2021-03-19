@@ -42,7 +42,7 @@ return neighbors;
  */
 void updateBoard(int* board, int boardRowSize, int boardColSize) {
     int liveN=0;
-    int *newboard;
+    int newboard[boardColSize*boardRowSize];
    
     for(int i =0; i<= boardRowSize-1; i++){
         for(int j =0; j<= boardColSize-1; j++){
