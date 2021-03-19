@@ -16,11 +16,11 @@ int countLiveNeighbor(int* board, int boardRowSize, int boardColSize, int row, i
 
 int neighbors = 0;
 
-    for(int i=row-1; i = row+1/*i >= row-1 && i <= row+1*/; i++){
+    for(int i=row-1;i >= row-1 && i <= row+1; i++){
         if(row >= 0 && row <= boardRowSize -1){
-            for(int j =col-1; j=col+1/*j >= col-1 && j <= col+1*/;j++){
+            for(int j =col-1; j >= col-1 && j <= col+1;j++){
                 if(col>=0 && col <= boardColSize-1){
-                    if((board + boardColSize*row + col) != (board + boardColSize*i + j)){
+                    if(i != row || j!=col){//(board + boardColSize*row + col) != (board + boardColSize*i + j)){
                         if(*(board+boardColSize*i+j)==1){
                             neighbors++;
                         }
