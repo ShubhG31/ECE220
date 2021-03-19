@@ -42,7 +42,13 @@ return neighbors;
  */
 void updateBoard(int* board, int boardRowSize, int boardColSize) {
     int liveN=0;
-    int *newboard = board;
+    int *newboard;
+   
+    for(int i =0; i<= boardRowSize-1; i++){
+        for(int j =0; j<= boardColSize-1; j++){
+            *(newboard + boardColSize*i +j)= *(board + boardColSize*i +j);
+        }
+    } 
     for(int row = 0; row<=boardRowSize-1; row++ ){
         for(int col=0; col <= boardColSize-1; col++){
             liveN = countLiveNeighbor(board, boardRowSize, boardColSize, row, col);
@@ -57,9 +63,9 @@ void updateBoard(int* board, int boardRowSize, int boardColSize) {
             }
         }
     }
-    for(int i =0; i<= boardRowSize-1; i++){
-        for(int j =0; j<= boardColSize-1; j++){
-            *(board + boardColSize*i +j)= *(newboard + boardColSize*i +j);
+     for(int k =0; k<= boardRowSize-1; k++){
+        for(int l =0; l<= boardColSize-1; l++){
+            *(board + boardColSize*k +l)= *(newboard + boardColSize*k +l);
         }
     } 
 }
