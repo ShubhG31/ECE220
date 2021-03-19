@@ -21,7 +21,7 @@ int neighbors = 0;
             for(int j =0; j >= col-1 && j <= col+1;j++){
                 if(col>=0 && col <= boardColSize+1){
                     if((board + boardColSize*row + col) != (board + boardColSize*i + j)){
-                        if(board[boardColSize*i+j]==1){
+                        if(*(board+boardColSize*i+j)==1){
                             neighbors++;
                         }
                     }
