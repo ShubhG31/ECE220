@@ -81,7 +81,7 @@ int aliveStable(int* board, int boardRowSize, int boardColSize){
     for(int row=0; row<=boardRowSize-1; row++){
         for(int col=0; col<=boardColSize-1; col++){
             alive = countLiveNeighbor(board, boardRowSize, boardColSize, row, col);
-            if (*(board + boardColSize*row +col) == 1){
+            if (board[boardColSize*row +col] == 1){
                 if(alive!=3 || alive!=2){
                     return 0;
                 }
