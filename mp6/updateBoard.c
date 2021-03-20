@@ -86,15 +86,16 @@ int aliveStable(int* board, int boardRowSize, int boardColSize){
                     return 0;
                 }
 
-              }
+              
                else {
-                if(alive==3){
-                    return 0;
+                    if(alive==3){
+                        return 0;
+                     }
                 }
-            }
-        }
+             }
+        }  
     }
-        return 1;
+    return 1;
 }
 
 
