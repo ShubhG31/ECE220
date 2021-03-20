@@ -81,29 +81,24 @@ void updateBoard(int* board, int boardRowSize, int boardColSize) {
  * return 0 if the alive cells change for the next step.
  */ 
 int aliveStable(int* board, int boardRowSize, int boardColSize){
-    int old_alive=0;
-    int new_alive=0;
-    int* changed_board=board;
+    int alive = 0;
     for(int row=0; row<=boardRowSize-1; row++){
         for(int col=0; col<=boardColSize-1; col++){
-            *(changed_board + boardColSize*row +col) = *(board+ boardColSize*row +col);
-            if(*(board + boardColSize*row + col)==1){
-                old_alive++;
+            alive = countLiveNeighbor(board, boardRowSize, boardColSize, row, col);
+            if (*(board + boardRowSize*row +col) == 1){
+                if(alive!=3 || alive!=2){
+                    return 0;
+                }
+
+              }
+               else {
+                if(alive==3){
+                    return 0;
+                }
             }
         }
     }
-    updateBoard(changed_board, boardRowSize, boardColSize);
-    for(int row=0; row<=boardRowSize-1; row++){
-        for(int col=0; col<=boardColSize-1; col++){
-            if(*(changed_board + boardColSize*row + col)==1){
-                new_alive++;
-            }
-        }
-    }
-    if(new_alive==old_alive){
         return 1;
-    }
-    return 0;
 }
 
 
