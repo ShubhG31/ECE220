@@ -89,21 +89,21 @@ int aliveStable(int* board, int boardRowSize, int boardColSize){
         for(int col=0; col<=boardColSize-1; col++){                 // for loop that goes through each column index value
             alive = countLiveNeighbor(board, boardRowSize, boardColSize, row, col);    //alive is set to alive cell neighbors 
             if (board[boardColSize*row +col] == 1){                 // if board of specified cell by for loop is alive then execute next statement
-                if(alive!=3 && alive!=2){                           
-                    return 0;
+                if(alive!=3 && alive!=2){                           // if alive value is not 2 and 3 then the cell is suppose to be dead so return 0
+                    return 0;                                       // return 0 to the main function
                 }
-             continue;
+             continue;                                              //continue to next loop iteration 
             }
-            else {
-                if(alive==3){
-                    return 0;
+            else {                                                  // if then cell is dead then execute next statements
+                if(alive==3){                                       // if alive neighbors is 3 then return 0 to the the main function
+                    return 0;                                       // return 0 to the main function
                 }
-                continue;
+                continue;                                           //  continue to the next loop iteration
             }
              
         }
     }
-    return 1;
+    return 1;                                                       // return 1 to main functions since the board did not change 
 }
 
 
