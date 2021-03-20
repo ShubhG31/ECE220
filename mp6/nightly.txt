@@ -8,11 +8,12 @@ updateBoard test passed
 aliveStable test passed
 ******Test 1******
 countLiveNeighbor test passed
-updateBoard test failed
+updateBoard test passed
+aliveStable test passed
 
-Failed the nightly test.
+Pass the nightly test!!!
 This nightly test is focusing on compilation error not functionality test.
 This nightly report only tests on the released testcases.
 There are many hidden edge testcase for the MP. Please test it yourselve.
 HIGHLY RECOMMEND YOU TO START YOUR MP EARLY!!!!!!!
-Timestamp: 2021-03-19_18:24:05
+Timestamp: 2021-03-19_21:22:56
