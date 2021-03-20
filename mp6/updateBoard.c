@@ -85,12 +85,14 @@ int aliveStable(int* board, int boardRowSize, int boardColSize){
                 if(alive!=3 || alive!=2){
                     return 0;
                 }
+             continue
             }
             else {
                 if(alive==3){
                     return 0;
                 }
-             }
+                continue
+            }
              
         }
     }
