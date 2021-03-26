@@ -101,8 +101,8 @@ int solve_sudoku(int sudoku[9][9]) {
 int i, j;
 int checker=0;
 
-  for(i=0; i<9; i++){
-    for(j=0; j<9; j++){
+  for(i=0; i<=8; i++){
+    for(j=0; j<=8; j++){
         if(sudoku[i][j]==0){
           checker+=1;
           break;
