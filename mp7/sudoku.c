@@ -122,10 +122,10 @@ for (int num =1; num<=9; num++){
       sudoku[i][j]=0;
     }
   }
-  return 0;
+  //return 0;
 }
 
-  //return 0;
+  return 0;
   // END TODO.
 }
 
