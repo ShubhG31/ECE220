@@ -98,8 +98,34 @@ int is_val_valid(const int val, const int i, const int j, const int sudoku[9][9]
 int solve_sudoku(int sudoku[9][9]) {
 
   // BEG TODO.
+int i, j;
+int checker=0;
 
+  for(i=0; i<9; i++){
+    for(j=0; j<9; j++){
+        if(sudoku[i][j]==0){
+          checker+=1;
+          break;
+        }
+    }
+  }
+  if(checker==0){
+    return 1;
+  }
+for (int num =1; num<=9; num++){
+  if(is_val_valid(num, i, j, sudoku)==1){
+    sudoku[i][j]=num;
+    if(solve_sudoku(sudoku)){
+      return 1;
+    }
+    else{
+      sudoku[i][j]=0;
+    }
+  }
   return 0;
+}
+
+  //return 0;
   // END TODO.
 }
 
