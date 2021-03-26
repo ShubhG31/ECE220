@@ -96,10 +96,9 @@ int is_val_valid(const int val, const int i, const int j, const int sudoku[9][9]
 // Procedure: solve_sudoku
 // Solve the given sudoku instance.
 int solve_sudoku(int sudoku[9][9]) {
-
   // BEG TODO.
+  printf("H");
 int i, j;
-
   for(i=0; i<=8; i++){
     for(j=0; j<=8; j++){
         if(sudoku[i][j]==0){
