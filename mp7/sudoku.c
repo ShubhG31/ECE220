@@ -43,24 +43,30 @@ int is_val_in_col(const int val, const int j, const int sudoku[9][9]) {
 int is_val_in_3x3_zone(const int val, const int i, const int j, const int sudoku[9][9]) {
    
   assert(i>=0 && i<9);
-  int row=(i/3)*3;
-  int col=(j/3)*3;
-  /*switch(i/3){
+  int row;//=(i/3)*3;
+  int col;//=(j/3)*3;
+  switch(i/3){
     case 0:
       row=0;
+      break;
     case 1:
       row=3;
+      break;
     case 2:
       row=6;
+      break;
   }
   switch(j/3){
     case 0:
       col=0;
+      break;
     case 1:
       col=3;
+      break;
     case 2:
       col=6;
-  }*/
+      break;
+  }
   // BEG TODOs
   for(int k=0; k<3; k++){
     for(int l=0; l<3;l++){
