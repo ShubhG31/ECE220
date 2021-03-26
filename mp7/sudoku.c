@@ -99,7 +99,8 @@ int solve_sudoku(int sudoku[9][9]) {
   // BEG TODO.
   printf("H");
 int i, j;
-  for(i=0; i<=8; i++){
+int counter;
+  /*for(i=0; i<=8; i++){
     for(j=0; j<=8; j++){
         if(sudoku[i][j]==0){
           break;
@@ -111,7 +112,22 @@ int i, j;
   }
   if(i>8 && j>8){
     return 1;
-  }
+  }*/
+for(i=0; i<=8; i++){
+    for(j=0; j<=8; j++){
+      if(sudoku[i][j]==0){
+        counter++;
+      }
+    }
+}
+if (counter==0){
+  return 1;
+}
+
+for(i=0; i<=8; i++){
+    for(j=0; j<=8; j++){
+    
+if(sudoku[i][j]==0){
 for (int num =1; num<=9; num++){
   if(is_val_valid(num, i, j, sudoku)==1){
     sudoku[i][j]=num;
@@ -123,6 +139,9 @@ for (int num =1; num<=9; num++){
     }
   }
   //return 0;
+}
+}
+    }
 }
   return 0;
   // END TODO.
