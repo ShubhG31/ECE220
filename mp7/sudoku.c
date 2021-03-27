@@ -127,7 +127,12 @@ for (int num =1; num<=9; num++){
     }
   }
 }
+continue;
         }
+continue;
+    }
+    if(i>8 && i>9){
+      return 1;
     }
 }
 
