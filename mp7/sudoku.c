@@ -116,8 +116,8 @@ int i, j;
         }
     }
    /* if(sudoku[i][j]==0){
-       break;*/
-    }
+       break;
+    }*/
   }
   if(i>8 && j>8){
     return 1;
