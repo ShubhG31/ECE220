@@ -97,13 +97,14 @@ int is_val_valid(const int val, const int i, const int j, const int sudoku[9][9]
 // Solve the given sudoku instance.
 int solve_sudoku(int sudoku[9][9]) {
   // BEG TODO.
-int i, j;
+int i, j, counter;
   for(i=0; i<=8; i++){
     for(j=0; j<=8; j++){
       if(sudoku[i][j]==0){
         printf("j: %d \n i: %d \n", j, i);
         break;
       }
+      counter++
     }
     if(sudoku[i][j]==0){
         printf("j: %d \n i: %d \n", j, i);
@@ -117,7 +118,7 @@ int i, j;
   // if there was no element 0, ie the board was complete,
   // then singleIndex must be beyond the sudoku board, ie
   // singleIndex=9*9
-  if (i>8 && j>8) {
+  if (counter>81) {
     return 1;
   }
 
