@@ -97,43 +97,34 @@ int is_val_valid(const int val, const int i, const int j, const int sudoku[9][9]
 // Solve the given sudoku instance.
 int solve_sudoku(int sudoku[9][9]) {
   // BEG TODO.
-int i, j, counter;
+int i, j;
   for(i=0; i<=8; i++){
     for(j=0; j<=8; j++){
       if(sudoku[i][j]==0){
-        printf("j: %d \n i: %d \n", j, i);
+        printf("1j: %d \n i: %d \n", j, i);
         break;
       }
-      counter++;
     }
     if(sudoku[i][j]==0){
-        printf("j: %d \n i: %d \n", j, i);
+        printf("2j: %d \n i: %d \n", j, i);
         break;
       }
   }
   if(sudoku[i][j]==0){
-        printf("j: %d \ni: %d \n", j, i);
+        printf("3j: %d \ni: %d \n", j, i);
       }
-  // i, j is now the index of an element 0 (unfilled cell)
-  // if there was no element 0, ie the board was complete,
-  // then singleIndex must be beyond the sudoku board, ie
-  // singleIndex=9*9
-  if (counter>81) {
+  
+  if (i>8 && j>8) {
     return 1;
   }
 
-  // iterate over all possibilities to fill cell
+ 
   for (int num=1; num<=9; num++) {
     if(sudoku[i][j]==0){
-        printf("j: %d \ni: %d \n", j, i);
+        //printf("j: %d \ni: %d \n", j, i);
       }
     if (is_val_valid(num, i, j, sudoku)) {
       sudoku[i][j] = num;
-      // call solve_sudoku to try filling next empty cell
-      // if it returns 1, then board is filled, and we are done
-      // so return true as well
-      // if it returns 0, none of the possibilities worked,
-      // so we need to backtrack and try a different number
       if (solve_sudoku(sudoku)) {
         return 1;
       }
