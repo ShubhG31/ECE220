@@ -112,21 +112,14 @@ int i, j;
         }
     }
   }
-  if(sudoku[i][j]==0){
-        printf("1j: %d \ni: %d \n", j, i);
-      }
-  
   if (i>8 && j>8) {
     return 1;
   }
 
  
   for (int num=1; num<=9; num++) {
-    printf("2j: %d \ni: %d \n", j, i);
     if (is_val_valid(num, i, j, sudoku)) {
-      printf("3j: %d \ni: %d \n", j, i);
       sudoku[i][j] = num;
-      printf("sudoku[%d][%d]= %d", i, j, sudoku[i][j]);
       if (solve_sudoku(sudoku)) {
         return 1;
       }
