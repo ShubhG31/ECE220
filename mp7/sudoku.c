@@ -112,16 +112,6 @@ int counter=0;
   if(i>8 && j>8){
     return 1;
   }*/
-for(i=0; i<=8; i++){
-    for(j=0; j<=8; j++){
-      if(sudoku[i][j]==0){
-        counter++;
-      }
-    }
-}
-if (counter==0){
-  return 1;
-}
 
 for(i=0; i<=8; i++){
     for(j=0; j<=8; j++){
@@ -133,7 +123,10 @@ for(i=0; i<=8; i++){
     break;
   }
 }
-
+if(i>8 && j>8){
+return 1;
+}
+if(sudoku[i][j]==0){
 for (int num =1; num<=9; num++){
   if(is_val_valid(num, i, j, sudoku)==1){
     sudoku[i][j]=num;
@@ -144,6 +137,7 @@ for (int num =1; num<=9; num++){
       sudoku[i][j]=0;
     }
   }
+}
   //return 0;
 }
 return 0;
