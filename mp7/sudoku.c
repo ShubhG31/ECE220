@@ -131,7 +131,7 @@ continue;
         }
 continue;
     }
-    if(i>8 && i>9){
+    if(i>8 && i>8){
       return 1;
     }
 }
