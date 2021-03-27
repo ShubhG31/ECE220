@@ -97,7 +97,7 @@ int is_val_valid(const int val, const int i, const int j, const int sudoku[9][9]
 // Solve the given sudoku instance.
 int solve_sudoku(int sudoku[9][9]) {
   // BEG TODO.
-int i, j;
+int i, j, singleIndex;
  /*for(i=0; i<=8; i++){
     for(j=0; j<=8; j++){
         if(sudoku[i][j]==0){
@@ -114,7 +114,7 @@ int i, j;
   */
  // Iterate through board and look for an element of 0, which means
   // an unfilled cell. If an element of 0 is found, break out of the loop.
-  for (int singleIndex=0; singleIndex<(9*9); singleIndex++) {
+  for (singleIndex=0; singleIndex<(9*9); singleIndex++) {
     i=singleIndex/9;
     j=singleIndex%9;
     if (sudoku[i][j] == 0) {
