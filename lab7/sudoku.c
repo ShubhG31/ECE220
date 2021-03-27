@@ -101,19 +101,19 @@ int i, j;
   for(i=0; i<=8; i++){
     for(j=0; j<=8; j++){
       if(sudoku[i][j]==0){
-        if(j>=0 && j<9){
+        if(j>=0 && j<9 && i>=0 && i<9){
         break;
       }
     }
     }
     if(sudoku[i][j]==0){
-        if(i>=0 && i<9){
+        if(i>=0 && i<9 && j>=0 && j<9){
         break;
         }
-  }
+    }
   }
   if(sudoku[i][j]==0){
-        printf("3j: %d \ni: %d \n", j, i);
+        printf("1j: %d \ni: %d \n", j, i);
       }
   
   if (i>8 && j>8) {
@@ -122,9 +122,9 @@ int i, j;
 
  
   for (int num=1; num<=9; num++) {
-    printf("4j: %d \ni: %d \n", j, i);
+    printf("2j: %d \ni: %d \n", j, i);
     if (is_val_valid(num, i, j, sudoku)) {
-      printf("5j: %d \ni: %d \n", j, i);
+      printf("3j: %d \ni: %d \n", j, i);
       sudoku[i][j] = num;
       printf("sudoku[%d][%d]= %d", i, j, sudoku[i][j]);
       if (solve_sudoku(sudoku)) {
