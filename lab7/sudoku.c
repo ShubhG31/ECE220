@@ -101,10 +101,14 @@ int i, j;
   for(i=0; i<=8; i++){
     for(j=0; j<=8; j++){
       if(sudoku[i][j]==0){
-        printf("i: %d \n j: %d \n", i, j);
+        printf("j: %d \n i: %d \n", j, i);
         break;
       }
     }
+    if(sudoku[i][j]==0){
+        printf("j: %d \n i: %d \n", j, i);
+        break;
+      }
   }
   // i, j is now the index of an element 0 (unfilled cell)
   // if there was no element 0, ie the board was complete,
