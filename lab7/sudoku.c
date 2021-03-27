@@ -115,6 +115,9 @@ int i, j;
       }
   
   if (i>8 && j>8) {
+    if(sudoku[i][j]==0){
+        printf("j: %d \ni: %d \n", j, i);
+      }
     return 1;
   }
 
