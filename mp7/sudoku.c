@@ -115,18 +115,17 @@ int counter=0;
 
 for(i=0; i<=8; i++){
     for(j=0; j<=8; j++){
-      if(sudoku[i][j]==0){
-        break;
-      }
+        if(sudoku[i][j]==0){
+          break;
+        }
+        continue;
     }
-  if(sudoku[i][j]==0){
-    break;
+    if(sudoku[i][j]==0){
+      break;
+    }
+    continue;
   }
-}
-if(i>8 && j>8){
-return 1;
-}
-if(sudoku[i][j]==0){
+
 for (int num =1; num<=9; num++){
   if(is_val_valid(num, i, j, sudoku)==1){
     sudoku[i][j]=num;
@@ -139,7 +138,7 @@ for (int num =1; num<=9; num++){
   }
 }
   //return 0;
-}
+
 return 0;
   // END TODO.
 }
