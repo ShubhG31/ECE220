@@ -114,7 +114,7 @@ int i, j;
   */
  // Iterate through board and look for an element of 0, which means
   // an unfilled cell. If an element of 0 is found, break out of the loop.
-  for (singleIndex=0; singleIndex<(9*9); singleIndex++) {
+  for (int singleIndex=0; singleIndex<(9*9); singleIndex++) {
     i=singleIndex/9;
     j=singleIndex%9;
     if (sudoku[i][j] == 0) {
