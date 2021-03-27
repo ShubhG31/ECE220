@@ -121,11 +121,10 @@ int i, j;
  
   for (int num=1; num<=9; num++) {
     printf("4j: %d \ni: %d \n", j, i);
-    if(sudoku[i][j]==0){
-        //printf("j: %d \ni: %d \n", j, i);
-      }
     if (is_val_valid(num, i, j, sudoku)) {
+      printf("5j: %d \ni: %d \n", j, i);
       sudoku[i][j] = num;
+      printf("sudoku[%d][%d]= %d", i, j, sudoku[i][j]);
       if (solve_sudoku(sudoku)) {
         return 1;
       }
