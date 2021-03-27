@@ -101,14 +101,16 @@ int i, j;
   for(i=0; i<=8; i++){
     for(j=0; j<=8; j++){
       if(sudoku[i][j]==0){
-        printf("1j: %d \n i: %d \n", j, i);
+        if(j>=0 && j<9){
         break;
       }
     }
+    }
     if(sudoku[i][j]==0){
-        printf("2j: %d \n i: %d \n", j, i);
+        if(i>=0 && i<9){
         break;
-      }
+        }
+  }
   }
   if(sudoku[i][j]==0){
         printf("3j: %d \ni: %d \n", j, i);
