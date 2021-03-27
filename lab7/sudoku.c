@@ -104,7 +104,7 @@ int i, j, counter;
         printf("j: %d \n i: %d \n", j, i);
         break;
       }
-      counter++
+      counter++;
     }
     if(sudoku[i][j]==0){
         printf("j: %d \n i: %d \n", j, i);
