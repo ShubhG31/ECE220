@@ -115,14 +115,12 @@ int i, j;
       }
   
   if (i>8 && j>8) {
-    if(sudoku[i][j]==0){
-        printf("j: %d \ni: %d \n", j, i);
-      }
     return 1;
   }
 
  
   for (int num=1; num<=9; num++) {
+    printf("4j: %d \ni: %d \n", j, i);
     if(sudoku[i][j]==0){
         //printf("j: %d \ni: %d \n", j, i);
       }
