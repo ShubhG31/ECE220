@@ -98,21 +98,7 @@ int is_val_valid(const int val, const int i, const int j, const int sudoku[9][9]
 int solve_sudoku(int sudoku[9][9]) {
   // BEG TODO.
 int i, j, singleIndex;
- /*for(i=0; i<=8; i++){
-    for(j=0; j<=8; j++){
-        if(sudoku[i][j]==0){
-          break;
-        }
-    }
-    if(sudoku[i][j]==0){
-       break;
-    }
-  }
-  if(i>8 && j>8){
-    return 1;
-  }
-  */
- // Iterate through board and look for an element of 0, which means
+  // Iterate through board and look for an element of 0, which means
   // an unfilled cell. If an element of 0 is found, break out of the loop.
   for (singleIndex=0; singleIndex<(9*9); singleIndex++) {
     i=singleIndex/9;
@@ -129,20 +115,25 @@ int i, j, singleIndex;
     return 1;
   }
 
-for (int num =1; num<=9; num++){
-  if(is_val_valid(num, i, j, sudoku)){
-    sudoku[i][j]=num;
-    if(solve_sudoku(sudoku)){
-      return 1;
-    }
-    else{
-      sudoku[i][j]=0;
+  // iterate over all possibilities to fill cell
+  for (int num=1; num<=9; num++) {
+    if (is_val_valid(num, i, j, sudoku)) {
+      sudoku[i][j] = num;
+      // call solve_sudoku to try filling next empty cell
+      // if it returns 1, then board is filled, and we are done
+      // so return true as well
+      // if it returns 0, none of the possibilities worked,
+      // so we need to backtrack and try a different number
+      if (solve_sudoku(sudoku)) {
+        return 1;
+      }
+      sudoku[i][j] = 0;
     }
   }
-}    
 
-  //return 0;
-return 0;
+  // we tried all posibilities of filling cell, and none of them worked,
+  // so return 0 to let the caller solve_sudoku know no possibility worked
+  return 0;
   // END TODO.
 }
 
