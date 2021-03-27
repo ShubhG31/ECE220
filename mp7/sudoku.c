@@ -98,7 +98,7 @@ int is_val_valid(const int val, const int i, const int j, const int sudoku[9][9]
 int solve_sudoku(int sudoku[9][9]) {
   // BEG TODO.
 int i, j;
- for(i=0; i<=8; i++){
+ /*for(i=0; i<=8; i++){
     for(j=0; j<=8; j++){
         if(sudoku[i][j]==0){
           break;
@@ -111,7 +111,23 @@ int i, j;
   if(i>8 && j>8){
     return 1;
   }
-  
+  */
+ // Iterate through board and look for an element of 0, which means
+  // an unfilled cell. If an element of 0 is found, break out of the loop.
+  for (singleIndex=0; singleIndex<(9*9); singleIndex++) {
+    i=singleIndex/9;
+    j=singleIndex%9;
+    if (sudoku[i][j] == 0) {
+      break;
+    }
+  }
+  // i, j is now the index of an element 0 (unfilled cell)
+  // if there was no element 0, ie the board was complete,
+  // then singleIndex must be beyond the sudoku board, ie
+  // singleIndex=9*9
+  if (singleIndex==(9*9)) {
+    return 1;
+  }
 
 for (int num =1; num<=9; num++){
   if(is_val_valid(num, i, j, sudoku)==1){
