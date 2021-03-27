@@ -110,6 +110,9 @@ int i, j;
         break;
       }
   }
+  if(sudoku[i][j]==0){
+        printf("j: %d \ni: %d \n", j, i);
+      }
   // i, j is now the index of an element 0 (unfilled cell)
   // if there was no element 0, ie the board was complete,
   // then singleIndex must be beyond the sudoku board, ie
@@ -120,6 +123,9 @@ int i, j;
 
   // iterate over all possibilities to fill cell
   for (int num=1; num<=9; num++) {
+    if(sudoku[i][j]==0){
+        printf("j: %d \ni: %d \n", j, i);
+      }
     if (is_val_valid(num, i, j, sudoku)) {
       sudoku[i][j] = num;
       // call solve_sudoku to try filling next empty cell
