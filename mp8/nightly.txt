@@ -1,5 +1,12 @@
 Compilation Results:
 ********************
+game.c: In function ‘move_w’:
+game.c:87:9: warning: unused variable ‘mergecounter’ [-Wunused-variable]
+     int mergecounter=0;
+         ^
+game.c:86:9: warning: unused variable ‘empty’ [-Wunused-variable]
+     int empty=-1;
+         ^
 
 ****** Testing make_game()  ******
 test - make_game() pointer: Pass 
@@ -29,4 +36,4 @@ This nightly test is focusing on compilation error not functionality test.
 This nightly report only tests on the released testcases.
 There are many hidden edge testcase for the MP. Please test it yourselve.
 HIGHLY RECOMMEND YOU TO START YOUR MP EARLY!!!!!!!
-Timestamp: 2021-04-02_12:22:32
+Timestamp: 2021-04-02_15:07:54
