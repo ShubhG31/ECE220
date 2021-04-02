@@ -40,10 +40,10 @@ void remake_game(game ** _cur_game_ptr,int new_rows,int new_cols)
 	 //YOUR CODE STARTS HERE:  Re-initialize all other variables in game struct
     for(int i=0; i<new_rows; i++){
         for(int j=0; j<new_cols; j++){
-           *(((*_cur_game_ptr)->new_cells) + (new_cols * i)+j)=-1;     
+           *(((*_cur_game_ptr)->cells) + (new_cols * i)+j)=-1;     
         } 
     }
-    (*_cur_game_ptr)->new_rows= new_rows;
+    (*_cur_game_ptr)->rows= new_rows;
     (*_cur_game_ptr)->cols=new_cols;
     (*_cur_game_ptr)->score=0;
     return;	
