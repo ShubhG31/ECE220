@@ -68,8 +68,8 @@ cell * get_cell(game * cur_game, int row, int col)
 */
 {
     //YOUR CODE STARTS HERE
-   if((cur_game->cells+row*(cur_game->cols)+col)!=NULL){
-       return (cur_game->cells+((row*(cur_game->cols))+ col));
+   if(((cur_game->cells)+(row*(cur_game->cols))+col)!=NULL){
+       return ((cur_game->cells)+((row*(cur_game->cols))+ col));
     }
     return NULL;
 }
@@ -83,7 +83,25 @@ int move_w(game * cur_game)
 */
 {
     //YOUR CODE STARTS HERE
-
+    int empty=-1;
+    int mergecounter=0;
+    for(int col=0; col<(cur_game->cols); col++){
+        for(int row=0; row<(cur_game->rows);row++){
+          if(col>=0 && col<cur_game->cols && row>=0 && row<cur_game->rows){
+                 if(*(cur_game->cells + (cur_game->cols*row) + col)==*(cur_game->cells + (cur_game->cols*(row+1)) + col)){
+                    *(cur_game->cells + (cur_game->cols*row) + col)=*(cur_game->cells + (cur_game->cols*(row+1)) + col) + *(cur_game->cells + (cur_game->cols*row) + col)
+                   for(int i=row+1;i<(cur_game->rows);i++){
+                       if(i>=0 && i<(cur_game->rows)){
+                        *(cur_game->cells + (cur_game->cols*i) + col)= *(cur_game->cells + (cur_game->cols*i+1) + col)
+                        if(i==(cur_game->rows)-1){
+                             *(cur_game->cells + (cur_game->cols*i) + col)=-1;
+                        }
+                       }
+                   }
+                 }
+           } 
+        }
+    }
     return 1;
 };
 
