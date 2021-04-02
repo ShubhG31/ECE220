@@ -68,8 +68,8 @@ cell * get_cell(game * cur_game, int row, int col)
 */
 {
     //YOUR CODE STARTS HERE
-   if((cur_game->cells+row+col)!=NULL){
-
+   if((cur_game->cells+row*(cur_game->cols)+col)!=NULL){
+       return (cur_game+(row*(cur_game->cols))+ col);
     }
     return NULL;
 }
