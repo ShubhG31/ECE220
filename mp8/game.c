@@ -92,7 +92,7 @@ int move_w(game * cur_game)
                     *(cur_game->cells + (cur_game->cols*row) + col)=*(cur_game->cells + (cur_game->cols*(row+1)) + col) + *(cur_game->cells + (cur_game->cols*row) + col);
                    for(int i=row+1;i<(cur_game->rows);i++){
                        if(i>=0 && i<(cur_game->rows)){
-                        *(cur_game->cells + (cur_game->cols*i) + col)= *(cur_game->cells + (cur_game->cols*i+1) + col)
+                        *(cur_game->cells + (cur_game->cols*i) + col)= *(cur_game->cells + (cur_game->cols*i+1) + col);
                         if(i==(cur_game->rows)-1){
                              *(cur_game->cells + (cur_game->cols*i) + col)=-1;
                         }
