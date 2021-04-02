@@ -14,12 +14,15 @@ game * make_game(int rows, int cols)
     mygame->cells = malloc(rows*cols*sizeof(cell));
 
     //YOUR CODE STARTS HERE:  Initialize all other variables in game struct
-   for(int i=0; i<rows; rows++){
-       for(int j=0; j<cols; cols++){
-           *(mygame->cells+ cols*i+j)=-1;
-       }
-   }
-    return mygame;
+   for(int i=0; i<rows; i++){
+       for(int j=0; j<cols; j++){
+           *((mygame->cells) + cols*i+j)=-1;
+        } 
+    }
+   mygame->rows= rows;
+   mygame->cols=cols;
+   mygame->score=0;
+   return mygame;
 }
 
 void remake_game(game ** _cur_game_ptr,int new_rows,int new_cols)
@@ -35,8 +38,15 @@ void remake_game(game ** _cur_game_ptr,int new_rows,int new_cols)
 	(*_cur_game_ptr)->cells = malloc(new_rows*new_cols*sizeof(cell));
 
 	 //YOUR CODE STARTS HERE:  Re-initialize all other variables in game struct
-
-	return;	
+    for(int i=0; i<new_rows; i++){
+        for(int j=0; j<new_cols; j++){
+           *(((*_cur_game_ptr)->new_cells) + (new_cols * i)+j)=-1;     
+        } 
+    }
+    (*_cur_game_ptr)->new_rows= new_rows;
+    (*_cur_game_ptr)->cols=new_cols;
+    (*_cur_game_ptr)->score=0;
+    return;	
 }
 
 void destroy_game(game * cur_game)
@@ -46,6 +56,7 @@ void destroy_game(game * cur_game)
     free(cur_game->cells);
     free(cur_game);
     cur_game = NULL;
+
     return;
 }
 
@@ -57,7 +68,9 @@ cell * get_cell(game * cur_game, int row, int col)
 */
 {
     //YOUR CODE STARTS HERE
+   if((cur_game->cells)[row][col]!=NULL){
 
+    }
     return NULL;
 }
 
