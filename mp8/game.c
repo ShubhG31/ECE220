@@ -14,15 +14,25 @@ game * make_game(int rows, int cols)
     mygame->cells = malloc(rows*cols*sizeof(cell));
 
     //YOUR CODE STARTS HERE:  Initialize all other variables in game struct
-   for(int i=0; i<rows; i++){
-       for(int j=0; j<cols; j++){
-           *((mygame->cells) + cols*i+j)=-1;
-        } 
+
+    // assign initial value to rows
+    mygame->rows = rows;
+    // assign initial value to col
+    mygame->cols = cols;
+
+    // assign initial value to all cells
+    // all cells start empty, so they must contain -1
+    // iterate over the whole cell board and set individual cells to -1
+    for (int i=0; i<rows; i++) {
+        for (int j=0; j<cols; j++) {
+            mygame->cells[i*cols+j] = -1;
+        }
     }
-   mygame->rows= rows;
-   mygame->cols=cols;
-   mygame->score=0;
-   return mygame;
+
+    // assign initial value to score
+    mygame->score = 0;
+
+    return mygame;
 }
 
 void remake_game(game ** _cur_game_ptr,int new_rows,int new_cols)
@@ -38,15 +48,21 @@ void remake_game(game ** _cur_game_ptr,int new_rows,int new_cols)
 	(*_cur_game_ptr)->cells = malloc(new_rows*new_cols*sizeof(cell));
 
 	 //YOUR CODE STARTS HERE:  Re-initialize all other variables in game struct
-    for(int i=0; i<new_rows; i++){
-        for(int j=0; j<new_cols; j++){
-           *(((*_cur_game_ptr)->cells) + (new_cols * i)+j)=-1;     
-        } 
+
+    // reinitialize rows and cols
+    (*_cur_game_ptr)->rows = new_rows;
+    (*_cur_game_ptr)->cols = new_cols;
+
+    // reassign initial value to all cells
+    // all cells start empty, so they must contain -1
+    // iterate over the whole cell board and set individual cells to -1
+    for (int i=0; i<new_rows; i++) {
+        for (int j=0; j<new_cols; j++) {
+            (*_cur_game_ptr)->cells[i*new_cols+j] = -1;
+        }
     }
-    (*_cur_game_ptr)->rows= new_rows;
-    (*_cur_game_ptr)->cols=new_cols;
-    (*_cur_game_ptr)->score=0;
-    return;	
+
+	return;	
 }
 
 void destroy_game(game * cur_game)
@@ -56,7 +72,6 @@ void destroy_game(game * cur_game)
     free(cur_game->cells);
     free(cur_game);
     cur_game = NULL;
-
     return;
 }
 
@@ -68,10 +83,19 @@ cell * get_cell(game * cur_game, int row, int col)
 */
 {
     //YOUR CODE STARTS HERE
-   if(((cur_game->cells)+(row*(cur_game->cols))+col)!=NULL){
-       return ((cur_game->cells)+((row*(cur_game->cols))+ col));
+    
+    // check if row or col is out of bounds, and if so, return 0
+    if (row<0 || row>=(cur_game->rows) || col<0 || col>=(cur_game->cols)) {
+        return NULL;
     }
-    return NULL;
+
+    // return a pointer corresponding to the cell at row, col
+    // find beginning pointer to cells
+    cell* specifiedCellPtr = cur_game->cells;
+    // add correct offset
+    specifiedCellPtr += row*(cur_game->cols) + col;
+    // return the pointer
+    return specifiedCellPtr;
 }
 
 int move_w(game * cur_game)
@@ -83,46 +107,380 @@ int move_w(game * cur_game)
 */
 {
     //YOUR CODE STARTS HERE
-    int empty=-1;
-    int mergecounter=0;
-    for(int col=0; col<(cur_game->cols); col++){
-        for(int row=0; row<(cur_game->rows);row++){
-          if(col>=0 && col<cur_game->cols && row>=0 && row<cur_game->rows){
-                 if(*(cur_game->cells + (cur_game->cols*row) + col)==*(cur_game->cells + (cur_game->cols*(row+1)) + col)){
-                    *(cur_game->cells + (cur_game->cols*row) + col)=*(cur_game->cells + (cur_game->cols*(row+1)) + col) + *(cur_game->cells + (cur_game->cols*row) + col);
-                   for(int i=row+1;i<(cur_game->rows);i++){
-                       if(i>=0 && i<(cur_game->rows)){
-                        *(cur_game->cells + (cur_game->cols*i) + col)= *(cur_game->cells + (cur_game->cols*i+1) + col);
-                        if(i==(cur_game->rows)-1){
-                             *(cur_game->cells + (cur_game->cols*i) + col)=-1;
-                        }
-                       }
-                   }
-                 }
-           } 
+
+    // to avoid having to use bool, we will define the convention that
+    // haveMerged contains the index of the last cell that was created 
+    // by merging. For example, haveMerged=5 means that the cell at index
+    // 5 was formed by merging, so we cannot merge with it. haveMerged=-1
+    // means that no cells have been merged yet for that specific column.
+    int haveMerged;
+
+    // we will also define the convention that haveChanged=0 means that
+    // the cells did not change, while haveChanged=1 means that sliding
+    // up changed some cells
+    int haveChanged=0;
+
+    // first iterate over all the cols, in left to right order
+    for (int currentCol=0; currentCol<(cur_game->cols); currentCol++) {
+        // set haveMerged for this col
+        haveMerged = -1;
+        // now iterate over all the elements in a single column,
+        // starting from top to bottom element
+        for (int currentRow=0; currentRow<(cur_game->rows); currentRow++) {
+            // first check if cell contains element or is empty
+            // if it contains an element, then we decide how to shift/merge it
+            // if it is empty, continue to next iteration
+            if (cur_game->cells[currentRow*(cur_game->cols)+currentCol] != -1) {
+                // current cell is not empty
+                // search for possible empty cell above to move the cell
+                // nextFreeRow is going to be set to the closest row above that is free
+                // if none of the rows above are free, nextFreeRow is -1
+                int nextFreeRow = currentRow-1;
+                while(nextFreeRow>=0) {
+                    if ( *(get_cell(cur_game, nextFreeRow, currentCol)) != -1 ) {
+                        // cell is not empty. This is the first non-empty cell,
+                        // so nextFreeRow index is one plus this row, unless
+                        // nextFreeRow is the currentRow, in which case we set it to -1
+                        // just a TOUCH of this SPECIAL DRESSING to makes it work - Gordon Ramsay
+                        nextFreeRow = (nextFreeRow+1==currentRow) ? -1 : nextFreeRow+1;
+                        break;
+                    }
+                    if (nextFreeRow-1<0) {
+                        // Check if this is the last free cell
+                        break;
+                    }
+                    nextFreeRow--;
+                }
+                
+                // If nextFreeRow is -1, then there is nowhere to move the cell up, 
+                // since all cells above is filled
+                // If nextFreeRow is not -1, then we can move the current cell to 
+                // nextFreeRow
+                if (nextFreeRow != -1) {
+                    // move cell in currentRow to nextFreeRow
+                    cur_game->cells[nextFreeRow*(cur_game->cols)+currentCol] = *(get_cell(cur_game, currentRow, currentCol));
+                    // set cell in currentRow to -1, as we moved it
+                    cur_game->cells[currentRow*(cur_game->cols)+currentCol] = -1;
+                    // set haveChanged since we moved a cell
+                    haveChanged = 1;
+                }
+
+                // Calculate the potentialMergeRow based from nextFreeRow and possible merging. 
+                // potentialMergeRow is the index of the row to check for meging.
+                
+                // Set potentialMergeRow to the potential merging row index. If nextFreeRow 
+                // is not -1, then set potentialMergeRow to nextFreeRow-1. If it is -1, 
+                // then set potentialMergeRow to currentRow-1
+                // special SAUCE that makes this work !!
+                int potentialMergeRow = (nextFreeRow==-1) ? currentRow-1 : nextFreeRow-1; 
+
+                // Check if potentialMergeRow is a valid row, and if it 
+                // was not formed by merging
+                if (potentialMergeRow>=0 && (potentialMergeRow>haveMerged)) {
+                    // Check if the cell values match
+                    if ( *(get_cell(cur_game, potentialMergeRow, currentCol)) == *(get_cell(cur_game, potentialMergeRow+1, currentCol)) ) {
+                        // Merging is possible, so add cell in potentialMergeRow+1 to the cell in potentialMergeRow (above it)
+                        // This is equal to doubling its value
+                        cur_game->cells[potentialMergeRow*(cur_game->cols)+currentCol] *= 2;
+                        // set cell in potentialMergeRow+1 to -1, as we moved it
+                        cur_game->cells[(potentialMergeRow+1)*(cur_game->cols)+currentCol] = -1;
+                        // Set haveMerged so we don't merge again with this row
+                        haveMerged = potentialMergeRow;
+                        // Set haveChanged since we merged cells
+                        haveChanged = 1;
+                    }
+                }
+
+            }
         }
     }
-    return 1;
+
+    if (haveChanged) {
+        return 1;
+    } else {
+        return 0;
+    }
 };
+
+/* For the move_s, move_a, and move_d functions, the code is very similar 
+to move_w, so the comments are not repeated, unless necessary. */
 
 int move_s(game * cur_game) //slide down
 {
     //YOUR CODE STARTS HERE
 
-    return 1;
+    // debugging
+    print_game(cur_game);
+
+    int haveMerged;
+    int haveChanged=0;
+
+    // first iterate over all the cols, in left to right order
+    for (int currentCol=0; currentCol<(cur_game->cols); currentCol++) {
+        // set haveMerged for this col
+        // in this case, it is intialized to one below the maximum row
+        haveMerged = (cur_game->rows);
+        // now iterate over all the elements in a single column,
+        // starting from bottom to top element
+        for (int currentRow=(cur_game->rows)-1; currentRow>=0; currentRow--) {
+            // first check if cell contains element or is empty
+            // if it contains an element, then we decide how to shift/merge it
+            // if it is empty, continue to next iteration
+            if (cur_game->cells[currentRow*(cur_game->cols)+currentCol] != -1) {
+                // current cell is not empty
+                // search for possible empty cell below to move the cell
+                // nextFreeRow is going to be set to the closest row below that is free
+                // if none of the rows below are free, nextFreeRow is -1
+                int nextFreeRow = currentRow+1;
+                while( nextFreeRow<(cur_game->rows) ) {
+                    if ( *(get_cell(cur_game, nextFreeRow, currentCol)) != -1 ) {
+                        // cell is not empty. This is the first non-empty cell,
+                        // so nextFreeRow index is one minus this row, unless
+                        // nextFreeRow is the currentRow, in which case we set it to -1
+                        // just a TOUCH of this SPECIAL DRESSING to makes it work - Gordon Ramsay
+                        nextFreeRow = (nextFreeRow-1==currentRow) ? (cur_game->rows) : nextFreeRow-1;
+                        break;
+                    }
+                    if (nextFreeRow+1>=(cur_game->rows) ) {
+                        // Check if this is the last free cell
+                        break;
+                    }
+                    nextFreeRow++;
+                }
+                
+                // If nextFreeRow is cur_game->rows, then there is nowhere to move the cell down, 
+                // since all cells below is filled
+                // If nextFreeRow is not cur_game->rows, then we can move the current cell to 
+                // nextFreeRow
+                if (nextFreeRow != cur_game->rows) {
+                    // move cell in currentRow to nextFreeRow
+                    cur_game->cells[nextFreeRow*(cur_game->cols)+currentCol] = *(get_cell(cur_game, currentRow, currentCol));
+                    // set cell in currentRow to -1, as we moved it
+                    cur_game->cells[currentRow*(cur_game->cols)+currentCol] = -1;
+                    // set haveChanged since we moved a cell
+                    haveChanged = 1;
+                }
+
+                // Calculate the potentialMergeRow based from nextFreeRow and possible merging. 
+                // potentialMergeRow is the index of the row to check for meging.
+                
+                // Set potentialMergeRow to the potential merging row index. If nextFreeRow 
+                // is not cur_game->rows, then set potentialMergeRow to nextFreeRow+1. If it is cur_game->rows,, 
+                // then set potentialMergeRow to currentRow+1
+                // special SAUCE that makes this work !!
+                int potentialMergeRow = (nextFreeRow==(cur_game->rows)) ? currentRow+1 : nextFreeRow+1; 
+
+                // Check if potentialMergeRow is a valid row, and if it 
+                // was not formed by merging
+                if (potentialMergeRow<(cur_game->rows) && (potentialMergeRow<haveMerged)) {
+                    // Check if the cell values match
+                    if ( *(get_cell(cur_game, potentialMergeRow, currentCol)) == *(get_cell(cur_game, potentialMergeRow-1, currentCol)) ) {
+                        // Merging is possible, so add cell in potentialMergeRow-1 to the cell in potentialMergeRow (below it)
+                        // This is equal to doubling its value
+                        cur_game->cells[potentialMergeRow*(cur_game->cols)+currentCol] *= 2;
+                        // set cell in potentialMergeRow-1 to -1, as we moved it
+                        cur_game->cells[(potentialMergeRow-1)*(cur_game->cols)+currentCol] = -1;
+                        // Set haveMerged so we don't merge again with this row
+                        haveMerged = potentialMergeRow;
+                        // Set haveChanged since we merged cells
+                        haveChanged = 1;
+                    }
+                }
+
+            }
+        }
+    }
+
+    if (haveChanged) {
+        return 1;
+    } else {
+        return 0;
+    }
 };
 
 int move_a(game * cur_game) //slide left
 {
     //YOUR CODE STARTS HERE
+    
+    // debugging
+    print_game(cur_game);
 
-    return 1;
+    int haveMerged;
+    int haveChanged=0;
+
+    // first iterate over all the rows, in top to bottom order
+    for (int currentRow=0; currentRow<(cur_game->rows); currentRow++) {
+        // set haveMerged for this row
+        // in this case, it is intialized to -1
+        haveMerged = -1;
+        // now iterate over all the elements in a single row,
+        // starting from left to right element
+        for (int currentCol=0; currentCol<(cur_game->cols); currentCol++) {
+            // first check if cell contains element or is empty
+            // if it contains an element, then we decide how to shift/merge it
+            // if it is empty, continue to next iteration
+            if (cur_game->cells[currentRow*(cur_game->cols)+currentCol] != -1) {
+                // current cell is not empty
+                // search for possible empty cell to the left to move the cell
+                // nextFreeCol is going to be set to the closest col on the left is free
+                // if none of the cols on the left are free, nextFreeCol is -1
+                int nextFreeCol = currentCol-1;
+                while( nextFreeCol>=0 ) {
+                    if ( *(get_cell(cur_game, currentRow, nextFreeCol)) != -1 ) {
+                        // cell is not empty. This is the first non-empty cell,
+                        // so nextFreeCol index is one plus this col, unless
+                        // nextFreeCol is the currentCol, in which case we set it to -1
+                        // just a TOUCH of this SPECIAL DRESSING to makes it work - Gordon Ramsay
+                        nextFreeCol = (nextFreeCol+1==currentCol) ? -1 : nextFreeCol+1;
+                        break;
+                    }
+                    if (nextFreeCol-1<0) {
+                        // Check if this is the last free cell
+                        break;
+                    }
+                    nextFreeCol--;
+                }
+                
+                // If nextFreeCol is -1, then there is nowhere to move the cell left, 
+                // since all cells to the left is filled
+                // If nextFreeRow is not -1, then we can move the current cell to 
+                // nextFreeCol
+                if (nextFreeCol != -1) {
+                    // move cell in currentCol to nextFreeCol
+                    cur_game->cells[currentRow*(cur_game->cols)+nextFreeCol] = *(get_cell(cur_game, currentRow, currentCol));
+                    // set cell in currentCol to -1, as we moved it
+                    cur_game->cells[currentRow*(cur_game->cols)+currentCol] = -1;
+                    // set haveChanged since we moved a cell
+                    haveChanged = 1;
+                }
+
+                // Calculate the potentialMergeCol based from nextFreeCol and possible merging. 
+                // potentialMergeCol is the index of the col to check for meging.
+                
+                // Set potentialMergeCol to the potential merging col index. If nextFreeCol 
+                // is not -1, then set potentialMergeCol to nextFreeCol-1. If it is -1, 
+                // then set potentialMergeCol to currentCol-1
+                // special SAUCE that makes this work !!
+                int potentialMergeCol = (nextFreeCol==-1) ? currentCol-1 : nextFreeCol-1; 
+
+                // Check if potentialMergeCol is a valid col, and if it 
+                // was not formed by merging
+                if (potentialMergeCol>=0 && (potentialMergeCol>haveMerged)) {
+                    // Check if the cell values match
+                    if ( *(get_cell(cur_game, currentRow, potentialMergeCol)) == *(get_cell(cur_game, currentRow, potentialMergeCol+1)) ) {
+                        // Merging is possible, so add cell in potentialMergeCol+1 to the cell in potentialMergeCol (left of it)
+                        // This is equal to doubling its value
+                        cur_game->cells[currentRow*(cur_game->cols)+potentialMergeCol] *= 2;
+                        // set cell in potentialMergeCol+1 to -1, as we moved it
+                        cur_game->cells[currentRow*(cur_game->cols)+potentialMergeCol+1] = -1;
+                        // Set haveMerged so we don't merge again with this row
+                        haveMerged = potentialMergeCol;
+                        // Set haveChanged since we merged cells
+                        haveChanged = 1;
+                    }
+                }
+
+            }
+        }
+    }
+
+    if (haveChanged) {
+        return 1;
+    } else {
+        return 0;
+    }
 };
 
 int move_d(game * cur_game){ //slide to the right
     //YOUR CODE STARTS HERE
 
-    return 1;
+    // debugging
+    print_game(cur_game);
+
+    int haveMerged;
+    int haveChanged=0;
+
+    // first iterate over all the rows, in top to bottom order
+    for (int currentRow=0; currentRow<(cur_game->rows); currentRow++) {
+        // set haveMerged for this row
+        // in this case, it is intialized to cur_game->cols
+        haveMerged = cur_game->cols;
+        // now iterate over all the elements in a single row,
+        // starting from right to left element
+        for (int currentCol=(cur_game->cols)-1; currentCol>=0; currentCol--) {
+            // first check if cell contains element or is empty
+            // if it contains an element, then we decide how to shift/merge it
+            // if it is empty, continue to next iteration
+            if (cur_game->cells[currentRow*(cur_game->cols)+currentCol] != -1) {
+                // current cell is not empty
+                // search for possible empty cell to the right to move the cell
+                // nextFreeCol is going to be set to the closest col on the right that is free
+                // if none of the cols on the right are free, nextFreeCol is cur_game->cols
+                int nextFreeCol = currentCol+1;
+                while( nextFreeCol<cur_game->cols ) {
+                    if ( *(get_cell(cur_game, currentRow, nextFreeCol)) != -1 ) {
+                        // cell is not empty. This is the first non-empty cell,
+                        // so nextFreeCol index is one plus this col, unless
+                        // nextFreeCol is the currentCol, in which case we set it to cur_game->cols
+                        // just a TOUCH of this SPECIAL DRESSING to makes it work - Gordon Ramsay
+                        nextFreeCol = (nextFreeCol-1==currentCol) ? (cur_game->cols) : nextFreeCol-1;
+                        break;
+                    }
+                    if ( nextFreeCol+1>=(cur_game->cols) ) {
+                        // Check if this is the last free cell
+                        break;
+                    }
+                    nextFreeCol++;
+                }
+                
+                // If nextFreeCol is cur_game->cols, then there is nowhere to move the cell right, 
+                // since all cells to the right is filled
+                // If nextFreeRow is not -1, then we can move the current cell to 
+                // nextFreeCol
+                if (nextFreeCol != cur_game->cols) {
+                    // move cell in currentCol to nextFreeCol
+                    cur_game->cells[currentRow*(cur_game->cols)+nextFreeCol] = *(get_cell(cur_game, currentRow, currentCol));
+                    // set cell in currentCol to -1, as we moved it
+                    cur_game->cells[currentRow*(cur_game->cols)+currentCol] = -1;
+                    // set haveChanged since we moved a cell
+                    haveChanged = 1;
+                }
+
+                // Calculate the potentialMergeCol based from nextFreeCol and possible merging. 
+                // potentialMergeCol is the index of the col to check for meging.
+                
+                // Set potentialMergeCol to the potential merging col index. If nextFreeCol 
+                // is not cur_game->cols, then set potentialMergeCol to nextFreeCol+1. If it is cur_game->cols, 
+                // then set potentialMergeCol to currentCol+1
+                // special SAUCE that makes this work !!
+                int potentialMergeCol = (nextFreeCol==(cur_game->cols)) ? currentCol+1 : nextFreeCol+1; 
+
+                // Check if potentialMergeCol is a valid col, and if it 
+                // was not formed by merging
+                if (potentialMergeCol<(cur_game->cols) && (potentialMergeCol<haveMerged)) {
+                    // Check if the cell values match
+                    if ( *(get_cell(cur_game, currentRow, potentialMergeCol)) == *(get_cell(cur_game, currentRow, potentialMergeCol-1)) ) {
+                        // Merging is possible, so add cell in potentialMergeCol-1 to the cell in potentialMergeCol (right of it)
+                        // This is equal to doubling its value
+                        cur_game->cells[currentRow*(cur_game->cols)+potentialMergeCol] *= 2;
+                        // set cell in potentialMergeCol-1 to -1, as we moved it
+                        cur_game->cells[currentRow*(cur_game->cols)+potentialMergeCol-1] = -1;
+                        // Set haveMerged so we don't merge again with this row
+                        haveMerged = potentialMergeCol;
+                        // Set haveChanged since we merged cells
+                        haveChanged = 1;
+                    }
+                }
+
+            }
+        }
+    }
+
+    if (haveChanged) {
+        return 1;
+    } else {
+        return 0;
+    }
 };
 
 int legal_move_check(game * cur_game)
@@ -133,7 +491,34 @@ int legal_move_check(game * cur_game)
 {
     //YOUR CODE STARTS HERE
 
-    return 1;
+    // Iterate across all cells in the whole board
+    // Check for an empty cell. If a cell is empty, a legal move is possible, so return 1.
+    // Check for all adjacent cells directly above, below, left, and right of the cell. If 
+    // the cells have matching values, then a legal move is possible, so return 1.
+    // If none of the scenarios above is found, then no legal move is possible and return 0.
+
+    for (int i=0; i<(cur_game->rows); i++) {
+        for (int j=0; j<(cur_game->cols); j++) {
+            int cellValue = cur_game->cells[i*(cur_game->cols)+j];
+            // Check if cell is empty
+            if (cellValue == -1) {
+                // legal move is possible, so return 1
+                return 1;
+            }
+            // Check for neighboring cells
+            // With the simplest way, and there being only 4 directions,
+            // manually check each
+            // Because of short circuit (lazy) evaluation, we can place the bounds
+            // checker before the logical &&, and if it fails, we are not
+            // going to evaluate the second term anymore
+            if (i-1>=0 && cur_game->cells[(i-1)*(cur_game->cols)+j] == cellValue) {return 1;}
+            if (i+1<(cur_game->rows) && cur_game->cells[(i+1)*(cur_game->cols)+j] == cellValue) {return 1;} 
+            if (j-1>=0 && cur_game->cells[i*(cur_game->cols)+j-1] == cellValue) {return 1;}
+            if (j+1<(cur_game->cols) && cur_game->cells[i*(cur_game->cols)+j+1] == cellValue) {return 1;}
+        }
+    }
+    // No legal moves found so return 0
+    return 0;
 }
 
 
