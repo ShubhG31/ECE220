@@ -1,5 +1,8 @@
 #include "game.h"
-
+/* Introduction: This code uses many functions to implement the game 2048. Functions are in charge
+of shifting the row values and column values. So merging cells as well as having empty cells is important.
+It also checks if the columns and rows can be merged or not. It also increases the score as it goes.
+Partners: Clegras2, htd2 */
 
 game * make_game(int rows, int cols)
 /*! Create an instance of a game structure with the given number of rows
