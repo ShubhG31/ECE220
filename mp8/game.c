@@ -196,6 +196,7 @@ int move_w(game * cur_game)
     }
 
     if (haveChanged) {
+        *(cur_game->score)=+1;
         return 1;
     } else {
         return 0;
@@ -292,6 +293,7 @@ int move_s(game * cur_game) //slide down
     }
 
     if (haveChanged) {
+        *(cur_game->score)=+1;
         return 1;
     } else {
         return 0;
@@ -385,6 +387,7 @@ int move_a(game * cur_game) //slide left
     }
 
     if (haveChanged) {
+        *(cur_game->score)=+1;
         return 1;
     } else {
         return 0;
@@ -477,6 +480,7 @@ int move_d(game * cur_game){ //slide to the right
     }
 
     if (haveChanged) {
+        *(cur_game->score)=+1;
         return 1;
     } else {
         return 0;
