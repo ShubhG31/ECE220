@@ -17,7 +17,7 @@ maze_t * createMaze(char * fileName)
     maze_t *value=(maze_t*)malloc(sizeof(maze_t));
     file_p= fopen(fileName,"r"); // sets the pointer of the file to the start of the contents of the file 
 
-    fscanf(file_p, "%d%d", value->width,value->height);
+    fscanf(file_p, "%d%d", (value->width),(value->height));
    
     //value->startColumn=(int*)malloc(sizeof(int));
     //value->startRow=(int*)malloc(sizeof(int));
