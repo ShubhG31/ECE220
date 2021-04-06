@@ -84,13 +84,13 @@ void destroyMaze(maze_t * maze)
     // Your code here.
      for(int z=0; z<(maze->height);z++){
         for(int x=0; x<(maze->width);x++){
-            if(z>=0 && z<(value->height) && x>=0 && x<(value->width) ){
-                free((*(maze->cells)+((value->width)*z)+x));
+            if(z>=0 && z<(maze->height) && x>=0 && x<(maze->width) ){
+                free((*(maze->cells)+((maze->width)*z)+x));
             }
         }
     }
     for(int k=0; k<(maze->width);k++){
-         if(k>=0 && k<(value->width)){
+         if(k>=0 && k<(maze->width)){
             free(((maze->cells)+k));
          }
     }
@@ -113,7 +113,7 @@ void printMaze(maze_t * maze)
       // Your code here.
     for(int z=0; z<(maze->height);z++){
         for(int x=0; x<(maze->width);x++){
-            if(z>=0 && z<(value->height) && x>=0 && x<(value->width) ){
+            if(z>=0 && z<(maze->height) && x>=0 && x<(maze->width) ){
                 printf("%c",*(*(maze->cells)+((maze->width)*z)+x));
             }
         }
