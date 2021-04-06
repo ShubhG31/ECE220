@@ -17,7 +17,7 @@ maze_t * createMaze(char * fileName)
     maze_t *value=(maze_t*)malloc(sizeof(maze_t));
     file_p= fopen(fileName,"r"); // sets the pointer of the file to the start of the contents of the file 
 
-    fscanf(file_p, "%d%d", value->width,value->height);
+    fscanf(file_p, "%d%d", &(value->width),&(value->height));
    
     //value->startColumn=(int*)malloc(sizeof(int));
     //value->startRow=(int*)malloc(sizeof(int));
@@ -29,7 +29,7 @@ maze_t * createMaze(char * fileName)
     for(r=0; r<(value->height);r++){
         for(c=0; c<(value->width);c++){
             if(r>=0 && r<(value->height) && c>=0 && c<(value->width) ){
-                fscanf(file_p,"%c",maze[r][c]);
+                fscanf(file_p,"%c",&(maze[r][c]));
             }
         }
     }
@@ -39,11 +39,11 @@ maze_t * createMaze(char * fileName)
     for(row=0; row<(value->height);row++){
         for(col=0; col<(value->width);col++){
             if(row>=0 && row<(value->height) && col>=0 && col<(value->width) ){
-              if(strcmp(maze[row][col],"S")==0){ // USE STRING COMPARE OPERATOR!!!!!!!!!!!
+              if(maze[row][col]==START){ // USE STRING COMPARE OPERATOR!!!!!!!!!!!
                     value->startColumn=col;
                     value->startRow=row;
                }
-                if(strcmp(maze[row][col],"E")==0){
+                if(maze[row][col]==END){
                     value->endColumn=col;
                     value->endRow=row;
                 } 
