@@ -39,11 +39,11 @@ maze_t * createMaze(char * fileName)
     for(row=0; row<(value->height);row++){
         for(col=0; col<(value->width);col++){
             if(row>=0 && row<(value->height) && col>=0 && col<(value->width) ){
-              if(strcmp(maze[row][col],START)==0){ // USE STRING COMPARE OPERATOR!!!!!!!!!!!
+              if(strcmp(maze[row][col],"S")==0){ // USE STRING COMPARE OPERATOR!!!!!!!!!!!
                     value->startColumn=col;
                     value->startRow=row;
                }
-                if(strcmp(maze[row][col],END)==0){
+                if(strcmp(maze[row][col],"E")==0){
                     value->endColumn=col;
                     value->endRow=row;
                 } 
