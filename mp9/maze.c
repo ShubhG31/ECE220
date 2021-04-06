@@ -39,7 +39,7 @@ maze_t * createMaze(char * fileName)
     for(int row=0; row<(value->height);row++){
         for(int col=0; col<(value->width);col++){
             if(row>=0 && row<(value->height) && col>=0 && col<(value->width) ){
-              if(maze[row][col]=="S"){
+              if(maze[row][col]=="S"){ // USE STRING COMPARE OPERATOR!!!!!!!!!!!
                 value->startColumn=col;
                 value->startRow=row;
                }
