@@ -98,6 +98,11 @@ void destroyMaze(maze_t * maze)
 void printMaze(maze_t * maze)
 {
     // Your code here.
+    for(int z=0; z<(maze->height);z++){
+        for(int x=0; x<(maze->width);x++){
+            printf("%c",*(*(maze->cells)+((maze->width)*z)+x));
+        }
+    }
 }
 
 /*
