@@ -23,7 +23,7 @@ maze_t * createMaze(char * fileName)
     value->widthRow=(int*)malloc(sizeof(int));
 
 
-    fclose(fileName);
+    fclose(file_p);
 
     return NULL;//Omit
 }
