@@ -28,7 +28,9 @@ maze_t * createMaze(char * fileName)
 
     for(int r=0; r<(value->height);r++){
         for(int c=0; c<(value->width);c++){
-            fscanf(file_p,"%c",maze[r][c]);
+            if(r>=0 && r<(value->height) && c>=0 && c<(value->width) ){
+                fscanf(file_p,"%c",maze[r][c]);
+            }
         }
     }
 
@@ -36,12 +38,15 @@ maze_t * createMaze(char * fileName)
 
     for(int row=0; row<(value->height);row++){
         for(int col=0; col<(value->width);col++){
-            if(maze[row][col]=="S"){
+            if(row>=0 && row<(value->height) && col>=0 && col<(value->width) ){
+              if(maze[row][col]=="S"){
                 value->startColumn=col;
                 value->startRow=row;
-            if(maze[row][col]=="E"){
-                value->endColumn=col;
-                value->endRow=row;
+               }
+                if(maze[row][col]=="E"){
+                    value->endColumn=col;
+                    value->endRow=row;
+                } 
             }
         }
     }
@@ -49,11 +54,15 @@ maze_t * createMaze(char * fileName)
     value->cells=(char**)malloc((value->width)*sizeof(char));
     
     for(int k=0; k<(value->width);k++){
-        *((value->cells)+k)=(char*)malloc((value->height)*sizeof(char));
+        if(k>=0 && k<(value->width)){
+            *((value->cells)+k)=(char*)malloc((value->height)*sizeof(char));
+        }
     }
     for(int z=0; z<(value->height);z++){
         for(int x=0; x<(value->width);x++){
-             *(*(value->cells)+((value->width)*z)+x)=maze[z][x];
+            if(k>=0 && k<(value->height) && x>=0 && x<(value->width) ){
+                *(*(value->cells)+((value->width)*z)+x)=maze[z][x];
+            }
         }
     }
 
@@ -75,11 +84,15 @@ void destroyMaze(maze_t * maze)
     // Your code here.
      for(int z=0; z<(maze->height);z++){
         for(int x=0; x<(maze->width);x++){
-             free((*(maze->cells)+((value->width)*z)+x));
+            if(z>=0 && z<(value->height) && x>=0 && x<(value->width) ){
+                free((*(maze->cells)+((value->width)*z)+x));
+            }
         }
     }
     for(int k=0; k<(maze->width);k++){
-        free(((maze->cells)+k));
+         if(k>=0 && k<(value->width)){
+            free(((maze->cells)+k));
+         }
     }
     free(maze->cells);
     free(maze);
@@ -100,7 +113,9 @@ void printMaze(maze_t * maze)
       // Your code here.
     for(int z=0; z<(maze->height);z++){
         for(int x=0; x<(maze->width);x++){
-            printf("%c",*(*(maze->cells)+((maze->width)*z)+x));
+            if(z>=0 && z<(value->height) && x>=0 && x<(value->width) ){
+                printf("%c",*(*(maze->cells)+((maze->width)*z)+x));
+            }
         }
     }
 }
