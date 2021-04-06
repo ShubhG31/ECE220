@@ -41,7 +41,7 @@ maze_t * createMaze(char * fileName)
             if(row>=0 && row<(value->height) && col>=0 && col<(value->width) ){
               if(strcmp(maze[row][col],START)==0){ // USE STRING COMPARE OPERATOR!!!!!!!!!!!
                     value->startColumn=col;
-                    alue->startRow=row;
+                    value->startRow=row;
                }
                 if(strcmp(maze[row][col],END)==0){
                     value->endColumn=col;
@@ -89,7 +89,7 @@ void destroyMaze(maze_t * maze)
      for(z=0; z<(maze->height);z++){
         for(x=0; x<(maze->width);x++){
             if(z>=0 && z<(maze->height) && x>=0 && x<(maze->width) ){
-                free((*((value->cells)+z)+x));
+                free((*((maze->cells)+z)+x));
             }
         }
     }
@@ -120,7 +120,7 @@ void printMaze(maze_t * maze)
     for(z=0; z<(maze->height);z++){
         for(x=0; x<(maze->width);x++){
             if(z>=0 && z<(maze->height) && x>=0 && x<(maze->width) ){
-                printf("%c",*(*((value->cells)+z)+x));
+                printf("%c",*(*((maze->cells)+z)+x));
             }
         }
     }
