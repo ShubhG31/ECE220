@@ -15,7 +15,7 @@ maze_t * createMaze(char * fileName)
     // Your code here. Make sure to replace following line with your own code.
     FILE *file_p; // File pointer
     maze_t *value=(maze_t*)malloc(sizeof(maze_t));
-    file_p= fopen(fileName,'r'); // sets the pointer of the file to the start of the contents of the file 
+    file_p= fopen(fileName,"r"); // sets the pointer of the file to the start of the contents of the file 
 
     fscanf(file_p, "%d%d", value->width,value->height);
    
@@ -36,10 +36,10 @@ maze_t * createMaze(char * fileName)
 
     for(int row=0; row<(value->height);row++){
         for(int col=0; col<(value->width);col++){
-            if(maze[row][col]="S"){
+            if(maze[row][col]=="S"){
                 value->startColumn=col;
                 value->startRow=row;
-            if(maze[row][col]="E"){
+            if(maze[row][col]=="E"){
                 value->endColumn=col;
                 value->endRow=row;
             }
@@ -97,7 +97,7 @@ void destroyMaze(maze_t * maze)
  */
 void printMaze(maze_t * maze)
 {
-    // Your code here.
+      // Your code here.
     for(int z=0; z<(maze->height);z++){
         for(int x=0; x<(maze->width);x++){
             printf("%c",*(*(maze->cells)+((maze->width)*z)+x));
