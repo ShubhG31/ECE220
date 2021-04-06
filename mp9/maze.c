@@ -20,7 +20,7 @@ maze_t * createMaze(char * fileName)
     fscanf(file_p, "%d%d", value->width,value->height);
    
     value->startColumn=(int*)malloc(sizeof(int));
-    value->widthRow=(int*)malloc(sizeof(int));
+    value->startRow=(int*)malloc(sizeof(int));
 
 
     fclose(file_p);
