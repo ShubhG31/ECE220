@@ -38,7 +38,7 @@ maze_t * createMaze(char * fileName)
     int row, col;
     for(row=0; row<(value->height);row++){
         for(col=0; col<(value->width);col++){
-            if(row>=0 && row<(value->height) && col>=0 && col<(value->width) ){
+            if(row>=0 && row<(value->height) && col>=0 && col<(value->width) ){ // redudantw
               if(maze[row][col]==START){ // USE STRING COMPARE OPERATOR!!!!!!!!!!!
                     value->startColumn=col;
                     value->startRow=row;
@@ -64,10 +64,10 @@ maze_t * createMaze(char * fileName)
     int z,x;
     for(z=0; z<(value->height);z++){
         for(x=0; x<(value->width);x++){
-            if(z>=0 && z<(value->height) && x>=0 && x<(value->width) ){
+            //if(z>=0 && z<(value->height) && x>=0 && x<(value->width) ){
                // *(*((value->cells)+z)+x)=maze[z][x];
                value->cells[z][x]=maze[z][x];
-            }
+            ]//}
         }
     }
 
