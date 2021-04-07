@@ -58,7 +58,7 @@ maze_t * createMaze(char * fileName)
     for(k=0; k<(value->height);k++){
         if(k>=0 && k<(value->height)){
            // *((value->cells)+k)=(char*)malloc((value->width)*sizeof(char));
-           value->cells=(char*)malloc((value->width)*sizeof(char))
+           value->cells=(char*)malloc((value->width)*sizeof(char));
         }
     }
     int z,x;
