@@ -1,0 +1,37 @@
+Compilation Results:
+********************
+maze.c: In function ‘createMaze’:
+maze.c:61:24: warning: assignment from incompatible pointer type [enabled by default]
+            value->cells=(char*)malloc((value->width)*sizeof(char));
+                        ^
+maze.c:70:13: error: expected statement before ‘]’ token
+             ]//}
+             ^
+maze.c: In function ‘solveMazeDFS’:
+maze.c:140:27: warning: unused parameter ‘maze’ [-Wunused-parameter]
+ int solveMazeDFS(maze_t * maze, int col, int row)
+                           ^
+maze.c:140:37: warning: unused parameter ‘col’ [-Wunused-parameter]
+ int solveMazeDFS(maze_t * maze, int col, int row)
+                                     ^
+maze.c:140:46: warning: unused parameter ‘row’ [-Wunused-parameter]
+ int solveMazeDFS(maze_t * maze, int col, int row)
+                                              ^
+make: *** [maze.o] Error 1
+
+Testing createMaze (20 pts)
+
+Testing destroyMaze (10 pts)
+destroyMaze score: 10 points if no memory leaks/errors otherwise 0
+valgrind: ./grader: No such file or directory
+
+Testing printMaze 
+PrintMazeScore: 0
+
+0
+Failed the nightly test.
+This nightly test is focusing on compilation error not functionality test.
+This nightly report only tests on the released testcases.
+There are many hidden edge testcase for the MP. Please test it yourselve.
+HIGHLY RECOMMEND YOU TO START YOUR MP EARLY!!!!!!!
+Timestamp: 2021-04-07_12:51:47
