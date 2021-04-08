@@ -66,7 +66,7 @@ maze_t * createMaze(char * fileName)
         for(x=0; x<(value->width);x++){
             //if(z>=0 && z<(value->height) && x>=0 && x<(value->width) ){
                // *(*((value->cells)+z)+x)=maze[z][x];
-               (value->cells)[z][x]=maze[z][x];
+            (value->cells)[z][x]=maze[z][x];
             //}
         }
     }
