@@ -101,7 +101,7 @@ void destroyMaze(maze_t * maze)
             free(((maze->cells)+k));
          }
     }
-    free(maze->cells);
+   // free(maze->cells);
     free(maze);
 
 }
