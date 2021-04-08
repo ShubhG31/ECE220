@@ -1,12 +1,5 @@
 Compilation Results:
 ********************
-maze.c: In function ‘createMaze’:
-maze.c:61:24: warning: assignment from incompatible pointer type [enabled by default]
-            value->cells=(char*)malloc((value->width)*sizeof(char));
-                        ^
-maze.c:70:13: error: expected statement before ‘]’ token
-             ]//}
-             ^
 maze.c: In function ‘solveMazeDFS’:
 maze.c:140:27: warning: unused parameter ‘maze’ [-Wunused-parameter]
  int solveMazeDFS(maze_t * maze, int col, int row)
@@ -17,21 +10,67 @@ maze.c:140:37: warning: unused parameter ‘col’ [-Wunused-parameter]
 maze.c:140:46: warning: unused parameter ‘row’ [-Wunused-parameter]
  int solveMazeDFS(maze_t * maze, int col, int row)
                                               ^
-make: *** [maze.o] Error 1
 
 Testing createMaze (20 pts)
+    Correct width and height: +2
+createMaze score: 2
 
 Testing destroyMaze (10 pts)
 destroyMaze score: 10 points if no memory leaks/errors otherwise 0
-valgrind: ./grader: No such file or directory
+==38159== Memcheck, a memory error detector
+==38159== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==38159== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==38159== Command: ./grader 1
+==38159== 
+==38159== Invalid free() / delete / delete[] / realloc()
+==38159==    at 0x4C2B06D: free (vg_replace_malloc.c:540)
+==38159==    by 0x40198E: destroyMaze (in /class/ece220/Spring2021/nightly/shubhg3/mp9/grader)
+==38159==    by 0x401108: test1 (in /class/ece220/Spring2021/nightly/shubhg3/mp9/grader)
+==38159==    by 0x4014F2: main (in /class/ece220/Spring2021/nightly/shubhg3/mp9/grader)
+==38159==  Address 0x5205501 is 1 bytes inside a block of size 51 free'd
+==38159==    at 0x4C2B06D: free (vg_replace_malloc.c:540)
+==38159==    by 0x40198E: destroyMaze (in /class/ece220/Spring2021/nightly/shubhg3/mp9/grader)
+==38159==    by 0x401108: test1 (in /class/ece220/Spring2021/nightly/shubhg3/mp9/grader)
+==38159==    by 0x4014F2: main (in /class/ece220/Spring2021/nightly/shubhg3/mp9/grader)
+==38159==  Block was alloc'd at
+==38159==    at 0x4C29F73: malloc (vg_replace_malloc.c:309)
+==38159==    by 0x400CDC: createMazeGold (in /class/ece220/Spring2021/nightly/shubhg3/mp9/grader)
+==38159==    by 0x4010F8: test1 (in /class/ece220/Spring2021/nightly/shubhg3/mp9/grader)
+==38159==    by 0x4014F2: main (in /class/ece220/Spring2021/nightly/shubhg3/mp9/grader)
+==38159== 
+==38159== Invalid free() / delete / delete[] / realloc()
+==38159==    at 0x4C2B06D: free (vg_replace_malloc.c:540)
+==38159==    by 0x4019E4: destroyMaze (in /class/ece220/Spring2021/nightly/shubhg3/mp9/grader)
+==38159==    by 0x401108: test1 (in /class/ece220/Spring2021/nightly/shubhg3/mp9/grader)
+==38159==    by 0x4014F2: main (in /class/ece220/Spring2021/nightly/shubhg3/mp9/grader)
+==38159==  Address 0x5205328 is 8 bytes inside a block of size 408 free'd
+==38159==    at 0x4C2B06D: free (vg_replace_malloc.c:540)
+==38159==    by 0x4019E4: destroyMaze (in /class/ece220/Spring2021/nightly/shubhg3/mp9/grader)
+==38159==    by 0x401108: test1 (in /class/ece220/Spring2021/nightly/shubhg3/mp9/grader)
+==38159==    by 0x4014F2: main (in /class/ece220/Spring2021/nightly/shubhg3/mp9/grader)
+==38159==  Block was alloc'd at
+==38159==    at 0x4C29F73: malloc (vg_replace_malloc.c:309)
+==38159==    by 0x400CA2: createMazeGold (in /class/ece220/Spring2021/nightly/shubhg3/mp9/grader)
+==38159==    by 0x4010F8: test1 (in /class/ece220/Spring2021/nightly/shubhg3/mp9/grader)
+==38159==    by 0x4014F2: main (in /class/ece220/Spring2021/nightly/shubhg3/mp9/grader)
+==38159== 
+==38159== 
+==38159== HEAP SUMMARY:
+==38159==     in use at exit: 0 bytes in 0 blocks
+==38159==   total heap usage: 54 allocs, 2,654 frees, 3,609 bytes allocated
+==38159== 
+==38159== All heap blocks were freed -- no leaks are possible
+==38159== 
+==38159== For lists of detected and suppressed errors, rerun with: -s
+==38159== ERROR SUMMARY: 2600 errors from 2 contexts (suppressed: 0 from 0)
 
 Testing printMaze 
 PrintMazeScore: 0
 
-0
+12
 Failed the nightly test.
 This nightly test is focusing on compilation error not functionality test.
 This nightly report only tests on the released testcases.
 There are many hidden edge testcase for the MP. Please test it yourselve.
 HIGHLY RECOMMEND YOU TO START YOUR MP EARLY!!!!!!!
-Timestamp: 2021-04-07_12:51:47
+Timestamp: 2021-04-08_00:38:05
