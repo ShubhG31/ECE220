@@ -51,7 +51,7 @@ maze_t * createMaze(char * fileName)
         }
     }
     //sets the cells double pointer to the column size of the maze height
-    value->cells=(char**)malloc((value->height)*sizeof(char*));
+    value->cells=(char*)malloc((value->height)*sizeof(char*));
     
     //sets the value of each row to the pointer of the width of the maze 
     int k;
@@ -121,9 +121,9 @@ void printMaze(maze_t * maze)
     int z,x;
     for(z=0; z<(maze->height);z++){
         for(x=0; x<(maze->width);x++){
-            if(z>=0 && z<(maze->height) && x>=0 && x<(maze->width) ){
+          //  if(z>=0 && z<(maze->height) && x>=0 && x<(maze->width) ){
                 printf("%c",*(*((maze->cells)+z)+x));
-            }
+           // }
         }
     }
 }
