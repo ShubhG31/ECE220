@@ -45,7 +45,7 @@ maze_t * createMaze(char * fileName)
     int row, col;
     for(row=0; row<(value->height);row++){
         for(col=0; col<(value->width);col++){
-            if(row>=0 && row<(value->height) && col>=0 && col<(value->width) ){ // redudantw
+            //if(row>=0 && row<(value->height) && col>=0 && col<(value->width) ){ // redudantw
               if(maze[row][col]==START){ // USE STRING COMPARE OPERATOR!!!!!!!!!!!
                     value->startColumn=col;
                     value->startRow=row;
@@ -54,7 +54,7 @@ maze_t * createMaze(char * fileName)
                     value->endColumn=col;
                     value->endRow=row;
                 } 
-            }
+           // }
         }
     }
     //sets the cells double pointer to the column size of the maze height
@@ -63,10 +63,10 @@ maze_t * createMaze(char * fileName)
     //sets the value of each row to the pointer of the width of the maze 
     int k;
     for(k=0; k<(value->height);k++){
-        if(k>=0 && k<(value->height)){
+       // if(k>=0 && k<(value->height)){
            // *((value->cells)+k)=(char*)malloc((value->width)*sizeof(char));
            value->cells[k]=(char*)malloc((value->width)*sizeof(char));
-        }
+       // }
     }
     int z,x;
     for(z=0; z<(value->height);z++){
@@ -97,16 +97,16 @@ void destroyMaze(maze_t * maze)
     int z,x;
      for(z=0; z<(maze->height);z++){
         for(x=0; x<(maze->width);x++){
-            if(z>=0 && z<(maze->height) && x>=0 && x<(maze->width) ){
+            //if(z>=0 && z<(maze->height) && x>=0 && x<(maze->width) ){
                 free((*((maze->cells)+z)+x));
-            }
+           // }
         }
     }
     int k;
     for(k=0; k<(maze->width);k++){
-         if(k>=0 && k<(maze->width)){
+        // if(k>=0 && k<(maze->width)){
             free(((maze->cells)+k));
-         }
+        // }
     }
    // free(maze->cells);
     free(maze);
