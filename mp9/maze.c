@@ -17,7 +17,7 @@ maze_t * createMaze(char * fileName)
     maze_t *value=(maze_t*)malloc(sizeof(maze_t));
     file_p= fopen(fileName,"r"); // sets the pointer of the file to the start of the contents of the file 
     fscanf(file_p, "%d %d", &(value->height),&(value->width));
-    char newline;
+    //char newline;
     //value->startColumn=(int*)malloc(sizeof(int));
     //value->startRow=(int*)malloc(sizeof(int));
     value->startColumn=0;
@@ -166,11 +166,8 @@ int solveMazeDFS(maze_t * maze, int col, int row)
     if(col>=maze->height || row>=maze->width){
         return 0;
     }
-    if(maze->cells[row][col]!=END){
-        return 0;
-    }
-    if(maze->cells[row][col]!= " "){
-        return 0;
+    if(maze->cells[row][col]== " "){
+        return 1;
     }
       if(maze->cells[row][col]==END){
         return 1;
