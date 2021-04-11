@@ -163,5 +163,31 @@ void printMaze(maze_t * maze)
 int solveMazeDFS(maze_t * maze, int col, int row)
 {
     // Your code here. Make sure to replace following line with your own code.
+    if(col>=maze->height || row>=maze->width){
+        return 0;
+    }
+    if(maze->cells[row][col]!=END){
+        return 0;
+    }
+    if(maze->cells[row][col]!= " "){
+        return 0;
+    }
+      if(maze->cells[row][col]==END){
+        return 1;
+    }
+    maze->cells[row][col]="*";
+    if(solveMazeDFS(maze, col-1, row)==1){
+        return 1;
+    }
+     if(solveMazeDFS(maze, col+1, row)==1){
+        return 1;
+    }
+    if(solveMazeDFS(maze, col, row-1)==1){
+        return 1;
+    }
+     if(solveMazeDFS(maze, col, row+1)==1){
+        return 1;
+    }
+    maze->cells[row][col]="~";
     return 0;
 }
