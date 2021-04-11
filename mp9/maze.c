@@ -75,11 +75,11 @@ maze_t * createMaze(char * fileName)
             else{
                 x--;
             }
-            if (z>=0 && z<(value->height) && x>=0 && x<(value->width && value -> cells[z][x] == START){
+            if (z>=0 && z<(value->height) && x>=0 && x<value->width && value -> cells[z][x] == START){
                 value -> startRow = z;
                 value -> startColumn = x;
-             }
-            else if (z>=0 && z<(value->height) && x>=0 && x<(value->width && value -> cells[z][x] == END){
+            }
+            else if (z>=0 && z<(value->height) && x>=0 && x<value->width && value -> cells[z][x] == END){
                 value -> endRow = z;
                 value -> endColumn = x;
             }
