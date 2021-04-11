@@ -31,7 +31,7 @@ maze_t * createMaze(char * fileName)
             //if(r>=0 && r<(value->height) && c>=0 && c<(value->width) ){
                fscanf(file_p,"%c",&(maze[r][c]));
                if(maze[r][c]=="\n"){
-                file_p++;
+                //file_p++;
                 c--;
                 continue;
             }
