@@ -112,8 +112,8 @@ void destroyMaze(maze_t * maze)
      for(z=0; z<(maze->height);z++){
         for(x=0; x<(maze->width);x++){
             //if(z>=0 && z<(maze->height) && x>=0 && x<(maze->width) ){
-               // free((*((maze->cells)+z)+x));
-                free(maze->cells[z][x]);
+               free((*((maze->cells)+z)+x));
+                //free(maze->cells[z][x]);
            // }
         }
     }
