@@ -33,7 +33,7 @@ maze_t * createMaze(char * fileName)
                // fscanf(file_p,"%c",&(maze[r][c]));
                maze[r][c]=fgetc(file_p);
                if(maze[r][c]=="\n"){
-                   r=r-1;
+                   c=c-1;
                }
             }
         }
