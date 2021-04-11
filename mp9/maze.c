@@ -26,11 +26,11 @@ maze_t * createMaze(char * fileName)
     
     char maze[(value->height)][(value->width)];
     int r,c;
-    for(c=0; c<(value->width);c++){
-        for(r=0; r<(value->height);r++){
+    for(r=0; r<(value->height);r++){
+        for(c=0; c<(value->width);c++){
             
-              // fscanf(file_p,"%c",&(maze[r][c]));
-              maze[r][c]=fgetc(file_p);
+               //fscanf(file_p,"%c",&(maze[r][c]));
+               maze[r][c]=fgetc(file_p);
             //   if(maze[r][c]=="\n"){
                 //file_p++;
               //  c--;
@@ -39,7 +39,6 @@ maze_t * createMaze(char * fileName)
            // }
         }
         fgetc(file_p);
-        // fgetc(file_p,"%c",&newline);
 
     }
 
@@ -75,7 +74,7 @@ maze_t * createMaze(char * fileName)
         for(x=0; x<(value->width);x++){
             //if(z>=0 && z<(value->height) && x>=0 && x<(value->width) ){
                // *(*((value->cells)+z)+x)=maze[z][x];
-            value->cells[z][x]=maze[z][x];
+            (value->cells)[z][x]=maze[z][x];
             //}
         }
     }
