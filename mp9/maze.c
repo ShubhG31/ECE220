@@ -134,7 +134,7 @@ void printMaze(maze_t * maze)
                 printf("%c",maze->cells[z][x]);
            // }
         }
-        printf("\n");
+        //printf("\n");
     }
 }
 
