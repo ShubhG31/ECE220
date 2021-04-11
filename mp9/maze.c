@@ -34,7 +34,6 @@ maze_t * createMaze(char * fileName)
                maze[r][c]=fgetc(file_p);
                if(maze[r][c]="\n"){
                    r=r-1;
-                   c=c-1;
                }
             }
         }
