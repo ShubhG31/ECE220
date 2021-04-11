@@ -29,11 +29,12 @@ maze_t * createMaze(char * fileName)
     for(r=0; r<(value->height);r++){
         for(c=0; c<(value->width);c++){
             //if(r>=0 && r<(value->height) && c>=0 && c<(value->width) ){
-            
-               // fscanf(file_p,"%c",&(maze[r][c]));
-               if(fgetc(file_p)!="\n"){
-                   maze[r][c]=fgetc(file_p);
-               }
+            if(*file_p=="\n"){
+                file_p++;
+                continue;
+            }
+               fscanf(file_p,"%c",&(maze[r][c]));
+               
               // maze[r][c]=fgetc(file_p);
            // }
         }
