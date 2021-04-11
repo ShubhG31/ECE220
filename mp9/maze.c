@@ -167,7 +167,7 @@ void printMaze(maze_t * maze)
 int solveMazeDFS(maze_t * maze, int col, int row)
 {
     // Your code here. Make sure to replace following line with your own code.
-    if(col< 0 || col>=maze->height || row<0 ||row>=maze->width){
+   /* if(col< 0 || col>=maze->height || row<0 ||row>=maze->width){
         return 0;
     }
     if(maze->cells[row][col]== " "){
@@ -180,7 +180,7 @@ int solveMazeDFS(maze_t * maze, int col, int row)
     if(col-1>=0 && col-1<maze->width && solveMazeDFS(maze, col-1, row)==1){
         return 1;
     }
-     if(col+1>=0 && col+1<maze->width && solveMazeDFS(maze, col+1, row)==1){
+     if((col+1)>=0 && (col+1)<(maze->width) && solveMazeDFS(maze, (col+1), row)==1){
         return 1;
     }
     if(col-1>=0 && row-1<maze->width && solveMazeDFS(maze, col, row-1)==1){
@@ -190,5 +190,41 @@ int solveMazeDFS(maze_t * maze, int col, int row)
         return 1;
     }
     maze->cells[row][col]="~";
+    return 0;*/
+    if (col < 0 || col >= maze -> width || row < 0 || row >= maze -> height){
+        return 0;
+    }
+
+    if (maze -> cells[row][col] == WALL || maze -> cells[row][col] == PATH || maze -> cells[row][col] == VISITED){
+        return 0;
+    }
+
+    if (col == maze -> endColumn && row == maze -> endRow){
+        maze -> cells[maze -> startRow][maze -> startColumn] = START;
+        return 1;
+    }
+
+    if (maze -> cells[row][col] != END){
+        maze -> cells[row][col] = PATH;
+    }
+
+    if (solveMazeDFS(maze, col - 1, row)){
+        return 1;
+    }
+    if (solveMazeDFS(maze, col, row - 1)){
+        return 1;
+    }
+    if (solveMazeDFS(maze, col + 1, row)){
+        return 1;
+    }
+    if (solveMazeDFS(maze, col, row + 1)){
+        return 1;
+    }
+
+    if (maze -> cells[row][col] != START && maze -> cells[row][col] != END){
+        maze -> cells[row][col] = VISITED;
+    }
+
+    // Your code here. Make sure to replace following line with your own code.
     return 0;
 }
