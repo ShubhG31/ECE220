@@ -16,7 +16,7 @@ maze_t * createMaze(char * fileName)
     FILE *file_p; // File pointer
     maze_t *value=(maze_t*)malloc(sizeof(maze_t));
     file_p= fopen(fileName,"r"); // sets the pointer of the file to the start of the contents of the file 
- 
+    char newline;
     fscanf(file_p, "%d %d", &(value->height),&(value->width));
   
     //value->startColumn=(int*)malloc(sizeof(int));
@@ -29,9 +29,12 @@ maze_t * createMaze(char * fileName)
     for(r=0; r<(value->height);r++){
         for(c=0; c<(value->width);c++){
             if(r>=0 && r<(value->height) && c>=0 && c<(value->width) ){
+            
                 fscanf(file_p,"%c",&(maze[r][c]));
             }
         }
+         fscanf(file_p,"%c",&newline);
+
     }
 
     fclose(file_p);
@@ -122,9 +125,11 @@ void printMaze(maze_t * maze)
     for(z=0; z<(maze->height);z++){
         for(x=0; x<(maze->width);x++){
           //  if(z>=0 && z<(maze->height) && x>=0 && x<(maze->width) ){
-                printf("%c",*(*((maze->cells)+z)+x));
+                //printf("%c",*(*((maze->cells)+z)+x));
+                printf("%c",maze->cells[z][x]);
            // }
         }
+        printf("\n");
     }
 }
 
