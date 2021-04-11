@@ -29,7 +29,7 @@ maze_t * createMaze(char * fileName)
     for(r=0; r<(value->height);r++){
         for(c=0; c<(value->width);c++){
             //if(r>=0 && r<(value->height) && c>=0 && c<(value->width) ){
-            if(*file_p=="\n"){
+            if(*(file_p)=="\n"){
                 file_p++;
                 continue;
             }
