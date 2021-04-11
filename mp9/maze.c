@@ -67,6 +67,7 @@ maze_t * createMaze(char * fileName)
     int z,x,c;
     for(z=0; z<(value->height);z++){
         for(x=0; x<(value->width);x++){
+            if(z>=0 && z<(maze->height) && x>=0 && x<(maze->width) ){
             c = fgetc(file_p);
             if (c != '\n'){
                 value-> cells[z][x] = c;
@@ -82,7 +83,7 @@ maze_t * createMaze(char * fileName)
                 value -> endRow = z;
                 value -> endColumn = x;
             }
-
+            }
            
            
             //if(z>=0 && z<(value->height) && x>=0 && x<(value->width) ){
