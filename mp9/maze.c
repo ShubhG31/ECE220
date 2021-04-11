@@ -125,6 +125,7 @@ void destroyMaze(maze_t * maze)
     }
    // free(maze->cells);
     free(maze);
+    maze=NULL;
 
 }
 
