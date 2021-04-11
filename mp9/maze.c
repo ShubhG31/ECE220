@@ -112,7 +112,8 @@ void destroyMaze(maze_t * maze)
      for(z=0; z<(maze->height);z++){
         for(x=0; x<(maze->width);x++){
             //if(z>=0 && z<(maze->height) && x>=0 && x<(maze->width) ){
-                free((*((maze->cells)+z)+x));
+               // free((*((maze->cells)+z)+x));
+                free(maze->cells[z][x]);
            // }
         }
     }
@@ -163,7 +164,7 @@ void printMaze(maze_t * maze)
 int solveMazeDFS(maze_t * maze, int col, int row)
 {
     // Your code here. Make sure to replace following line with your own code.
-    if(col>=maze->height || row>=maze->width){
+    if(col< 0 || col>=maze->height || row<0 ||row>=maze->width){
         return 0;
     }
     if(maze->cells[row][col]== " "){
