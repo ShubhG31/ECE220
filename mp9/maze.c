@@ -30,10 +30,15 @@ maze_t * createMaze(char * fileName)
         for(c=0; c<(value->width);c++){
             if(r>=0 && r<(value->height) && c>=0 && c<(value->width) ){
             
-                fscanf(file_p,"%c",&(maze[r][c]));
+               // fscanf(file_p,"%c",&(maze[r][c]));
+               maze[r][c]=fgetc(file_p);
+               if(maze[r][c]="\n"){
+                   r=r-1;
+                   c=c-1;
+               }
             }
         }
-         fscanf(file_p,"%c",&newline);
+        // fgetc(file_p,"%c",&newline);
 
     }
 
