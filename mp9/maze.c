@@ -26,8 +26,8 @@ maze_t * createMaze(char * fileName)
     
     char maze[(value->height)][(value->width)];
     int r,c;
-    for(r=0; r<=(value->height);r++){
-        for(c=0; c<=(value->width);c++){
+    for(r=0; r<(value->height);r++){
+        for(c=0; c<(value->width);c++){
             
                //fscanf(file_p,"%c",&(maze[r][c]));
                maze[r][c]=fgetc(file_p);
@@ -44,8 +44,8 @@ maze_t * createMaze(char * fileName)
 
     fclose(file_p);
     int row, col;
-    for(row=0; row<=(value->height);row++){
-        for(col=0; col<=(value->width);col++){
+    for(row=0; row<(value->height);row++){
+        for(col=0; col<(value->width);col++){
             //if(row>=0 && row<(value->height) && col>=0 && col<(value->width) ){ // redudantw
               if(maze[row][col]==START){ // USE STRING COMPARE OPERATOR!!!!!!!!!!!
                     value->startColumn=col;
@@ -63,15 +63,15 @@ maze_t * createMaze(char * fileName)
     
     //sets the value of each row to the pointer of the width of the maze 
     int k;
-    for(k=0; k<=(value->height);k++){
+    for(k=0; k<(value->height);k++){
        // if(k>=0 && k<(value->height)){
            // *((value->cells)+k)=(char*)malloc((value->width)*sizeof(char));
            value->cells[k]=(char*)malloc((value->width)*sizeof(char));
        // }
     }
     int z,x;
-    for(z=0; z<=(value->height);z++){
-        for(x=0; x<=(value->width);x++){
+    for(z=0; z<(value->height);z++){
+        for(x=0; x<(value->width);x++){
             //if(z>=0 && z<(value->height) && x>=0 && x<(value->width) ){
                // *(*((value->cells)+z)+x)=maze[z][x];
             (value->cells)[z][x]=maze[z][x];
@@ -127,8 +127,8 @@ void printMaze(maze_t * maze)
 {
       // Your code here.
     int z,x;
-    for(z=0; z<=(maze->height);z++){
-        for(x=0; x<=(maze->width);x++){
+    for(z=0; z<(maze->height);z++){
+        for(x=0; x<(maze->width);x++){
           //  if(z>=0 && z<(maze->height) && x>=0 && x<(maze->width) ){
                 //printf("%c",*(*((maze->cells)+z)+x));
                 printf("%c",maze->cells[z][x]);
