@@ -177,16 +177,16 @@ int solveMazeDFS(maze_t * maze, int col, int row)
         return 1;
     }
     maze->cells[row][col]="*";
-    if(solveMazeDFS(maze, col-1, row)==1){
+    if(col-1>=0 && col-1<maze->width && solveMazeDFS(maze, col-1, row)==1){
         return 1;
     }
-     if(solveMazeDFS(maze, col+1, row)==1){
+     if(col+1>=0 && col+1<maze->width && solveMazeDFS(maze, col+1, row)==1){
         return 1;
     }
-    if(solveMazeDFS(maze, col, row-1)==1){
+    if(col-1>=0 && row-1<maze->width && solveMazeDFS(maze, col, row-1)==1){
         return 1;
     }
-     if(solveMazeDFS(maze, col, row+1)==1){
+     if(row+1>=0 && row+1<maze->width && solveMazeDFS(maze, col, row+1)==1){
         return 1;
     }
     maze->cells[row][col]="~";
