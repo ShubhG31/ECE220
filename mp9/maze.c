@@ -32,9 +32,9 @@ maze_t * createMaze(char * fileName)
             
                // fscanf(file_p,"%c",&(maze[r][c]));
                maze[r][c]=fgetc(file_p);
-               if(maze[r][c]=="\n"){
-                   c=c-1;
-               }
+               //if(maze[r][c]=="\n"){
+                 //  c=c-1;
+               //}
             }
         }
         // fgetc(file_p,"%c",&newline);
