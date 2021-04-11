@@ -28,17 +28,14 @@ maze_t * createMaze(char * fileName)
     int r,c;
     for(r=0; r<(value->height);r++){
         for(c=0; c<(value->width);c++){
-            if(r>=0 && r<(value->height) && c>=0 && c<(value->width) ){
+            //if(r>=0 && r<(value->height) && c>=0 && c<(value->width) ){
             
                // fscanf(file_p,"%c",&(maze[r][c]));
-               if(fgetc(file_p)=="\n"){
-                   continue;
+               if(fgetc(file_p)!="\n"){
+                   maze[r][c]=fgetc(file_p);
                }
-               maze[r][c]=fgetc(file_p);
-               //if(maze[r][c]=="\n"){
-                 //  c=c-1;
-               //}
-            }
+              // maze[r][c]=fgetc(file_p);
+           // }
         }
         // fgetc(file_p,"%c",&newline);
 
