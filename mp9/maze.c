@@ -167,7 +167,7 @@ int solveMazeDFS(maze_t * maze, int col, int row)
         return 0;
     }
     if(maze->cells[row][col]== " "){
-        return 1;
+        return 0;
     }
       if(maze->cells[row][col]==END){
         return 1;
