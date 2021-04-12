@@ -122,7 +122,8 @@ void destroyMaze(maze_t * maze)
     int k;
     for(k=0; k<(maze->width);k++){
         // if(k>=0 && k<(maze->width)){
-            free(((maze->cells)+k));
+        //free(((maze->cells)+k));
+        free(maze->cells[k]);
         // }
     }
    free(maze->cells);
