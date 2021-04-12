@@ -110,7 +110,7 @@ maze_t * createMaze(char * fileName)
 void destroyMaze(maze_t * maze)
 {
     // Your code here.
-  /*  int z,x;
+   /* int z,x;
      for(z=0; z<(maze->height);z++){
         for(x=0; x<(maze->width);x++){
             //if(z>=0 && z<(maze->height) && x>=0 && x<(maze->width) ){
@@ -119,7 +119,7 @@ void destroyMaze(maze_t * maze)
            // }
         }
     }*/
-    /*int k;
+    int k;
     for(k=0; k<(maze->width);k++){
         // if(k>=0 && k<(maze->width)){
             free(((maze->cells)+k));
@@ -128,14 +128,7 @@ void destroyMaze(maze_t * maze)
    free(maze->cells);
     free(maze);
     maze=NULL;
-*/
-  int i;
-    for (i = 0; i < maze -> height; i++){
-        free(maze -> cells[i]);
-    }
-    free (maze -> cells);
-    free (maze);
-    maze = NULL;
+
 }
 
 /*
