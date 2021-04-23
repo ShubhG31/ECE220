@@ -18,8 +18,15 @@ sp_tuples * load_tuples(char* input_file)
 
     tuples_ptr->m=row;
     tuples_ptr->n=col;
-
+    tuples_ptr->nz=0;
+    tuples_ptr->tuples_head=NULL;
     
+    int r,c;
+    double v;
+    fgetc(f_ptr);
+    while(fscanf(f_ptr,"%d %d %lf",&r,&c,&v )!=EOF){
+        set_tuples(tuples_ptr, r, c, v);
+    }
    /* int i, j;
 
     tuples_ptr->tuples_head=(sp_tuples_node*)malloc(sizeof(sp_tuples_node));
@@ -43,7 +50,7 @@ sp_tuples * load_tuples(char* input_file)
     }
     */
     fclose(f_ptr);
-    return NULL;
+    return tuples_ptr;
 }
 
 
@@ -51,6 +58,17 @@ sp_tuples * load_tuples(char* input_file)
 double gv_tuples(sp_tuples * mat_t,int row,int col)
 
 {
+    sp_tuples_node *node;
+    node=mat_t->tuples_head;
+
+    while(node!=NULL){
+        if(node->col==col && node->row==row){
+             return node->value;
+        }
+        else if(node->col!=col || node->row!=row){
+             return 0;
+        }
+    }
     return 0;
 }
 
@@ -73,13 +91,13 @@ void save_tuples(char * file_name, sp_tuples * mat_t)
 
 sp_tuples * add_tuples(sp_tuples * matA, sp_tuples * matB){
 
-	return retmat;
+	return NULL;// retmat;
 }
 
 
 
 sp_tuples * mult_tuples(sp_tuples * matA, sp_tuples * matB){ 
-    return retmat;
+    return NULL; //retmat;
 
 }
 
