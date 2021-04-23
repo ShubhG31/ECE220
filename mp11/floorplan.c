@@ -101,8 +101,8 @@ void recut(node_t* ptr) {
   assert(ptr->module == NULL && ptr->cutline != UNDEFINED_CUTLINE);
 
   // TODO:
-  if(ptr->cutline== H) ptr->cutline==V;
-  if(ptr->cutline== V) ptr->cutline==H;
+  if(ptr->cutline== H) ptr->cutline=V;
+  if(ptr->cutline== V) ptr->cutline=H;
   return;
 }
 
