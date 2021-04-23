@@ -75,7 +75,7 @@ int is_internal_node(node_t* ptr) {
 int is_in_subtree(node_t* a, node_t* b) {
   // TODO: (remember to modify the return value appropriately)
   if(b->parent!= NULL){
-    if(a!= NULL){
+    if(b->right !=NULL|| b->left!=NULL){
       if(b->parent == a) return 1;
     }
   }
