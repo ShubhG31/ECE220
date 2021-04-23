@@ -74,11 +74,10 @@ int is_internal_node(node_t* ptr) {
 // Return 1 if the given subtree rooted at node 'b' resides in the subtree rooted at node 'a'.
 int is_in_subtree(node_t* a, node_t* b) {
   // TODO: (remember to modify the return value appropriately)
-  if(b->parent!= NULL){
-    if(b->right !=NULL|| b->left!=NULL){
-      if(b->parent == a) return 1;
-    }
-  }
+  if(a==NULL || b==NULL) return 0;
+  if(a==b) return 1;
+  if(is_in_subtree(a->left, b)) return 1;
+  if(is_in_subtree(a->right,b)) return 1;
   return 0;
 }
 
