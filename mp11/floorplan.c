@@ -66,8 +66,8 @@ int is_leaf_node(node_t* ptr) {
 // Return 1 if the given slicing tree node is an internal node, and 0 otherwise.
 int is_internal_node(node_t* ptr) {
   // TODO: (remember to modify the return value appropriately)
-  if(ptr->right!=NULL || ptr->left!=NULL) return 0;
-  return 1;
+  if(ptr->right!=NULL || ptr->left!=NULL) return 1;
+  return 0;
 }
 
 // Function: is_in_subtree
