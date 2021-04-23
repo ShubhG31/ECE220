@@ -101,9 +101,7 @@ void recut(node_t* ptr) {
   assert(ptr->module == NULL && ptr->cutline != UNDEFINED_CUTLINE);
 
   // TODO:
-  int temp=V;
-  (ptr->cutline).V=H;
-  (ptr->cutline).H=temp;
+  ptr->cutline= (ptr->cutline==H)?V:H;
 }
 
 // Procedure: swap_module
