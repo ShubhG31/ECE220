@@ -375,3 +375,477 @@ node_t* init_slicing_tree(node_t* par, int n) {
   return newInternalNodePtr;
 
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// PREDEFINED FUNCTIONS AND PROCEDURES.                                                          //
+// PLEASE DO NOT MODIFY ANY FIELD STARTING HERE.                                                 //
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Function: is_overlapped
+// Return 1 if any overlaps among modules, and 0 otherwise.
+int is_overlapped() {
+  int i, j;
+  int llxi, llyi, urxi, uryi;
+  int llxj, llyj, urxj, uryj;
+  int flag = 0;
+  for(i=0; i<num_modules; ++i) {
+    llxi = modules[i].llx;
+    llyi = modules[i].lly;
+    urxi = llxi + modules[i].w;
+    uryi = llyi + modules[i].h;       
+    for(j=i+1; j<num_modules; ++j) {
+     llxj = modules[j].llx;
+     llyj = modules[j].lly;
+     urxj = llxj + modules[j].w;
+     uryj = llyj + modules[j].h;
+
+     int rxu = MIN(urxi, urxj);
+     int ryu = MIN(uryi, uryj);
+     int rxl = MAX(llxi, llxj);
+     int ryl = MAX(llyi, llyj);
+
+     if(rxu>rxl && ryu>ryl) {
+       flag = 1;
+       printf("module %d and %d overlaps.\n", modules[i].idx, modules[j].idx);
+     }
+    }
+  }
+  return flag;
+}
+
+// Procedure: pnt_expression
+// Print the expression to the display.
+void pnt_expression(expression_unit_t *expression, int N) {
+
+  if(!is_valid_expression(expression, N)) {
+    printf("Invalid expression. Can't print. Please check your get_expression procedure.\n");   
+    return;
+  }
+
+  int i;
+  for(i=0; i<N; ++i) {
+    if(expression[i].cutline == UNDEFINED_CUTLINE) {
+      assert(expression[i].module != NULL);
+      printf("%d", expression[i].module->idx);
+    }
+    else {
+      assert(expression[i].module == NULL);
+      printf("%c", expression[i].cutline == V ? 'V' : 'H');
+    }
+  }
+  putchar('\n');
+}
+
+// Procedure: pnt_modules
+// Print the coordinates of each module.
+void pnt_modules() {
+  int i;
+  for(i=0; i<num_modules; ++i) {
+    printf("Module %d is placed at (%d, %d) with height=%d and width=%d\n",
+            modules[i].idx,
+            modules[i].llx, 
+            modules[i].lly,
+            modules[i].h, 
+            modules[i].w);
+  }
+} 
+
+// Procedure: write_modules
+// Write the coordinates of each module into a file.
+void write_modules(const char file[]) {
+  FILE *ofp = fopen(file, "w");
+  int i;
+  for(i=0; i<num_modules; ++i) {
+    printf("%d %d %d %d %d\n",
+            modules[i].idx,
+            modules[i].llx, 
+            modules[i].lly,
+            modules[i].h, 
+            modules[i].w);
+  }
+  fclose(ofp);
+} 
+
+// Function: get_module
+// Return the module pointer to the module with the given idx.
+module_t* get_module(int idx) {
+  int i;
+  for(i=0; i<num_modules; ++i) {
+    if(idx == modules[i].idx) return &modules[i];
+  }
+  return NULL;
+}
+
+// Function: packing
+// The main procedure of packing modules. The procedure takes the expression from the
+// current slicing tree and then compute the coordinate of each module.
+double packing(expression_unit_t* expression, int N) {
+
+  if(!is_valid_expression(expression, N)) {
+    return FLT_MAX;
+  }
+
+  // Initialize the stack by setting the variable stack_top as zero. The variable stack_top
+  // is also denoting the size of the stack.
+  int stack_top = 0;
+  cluster_t* stack = (cluster_t*)malloc(N*sizeof(cluster_t));
+
+  // Iterates through the expression
+  int i, j;
+  cluster_t cluster, cluster_l, cluster_r;
+  for(i=0; i<N; ++i) {
+    // Module
+    if(expression[i].module != NULL) {
+      assert(expression[i].cutline == UNDEFINED_CUTLINE);      
+
+      // Adjust the coordinate of the module.
+      expression[i].module->llx = 0;
+      expression[i].module->lly = 0;
+
+      // Create a cluster.
+      cluster.beg = i;
+      cluster.end = i;
+      cluster.w = expression[i].module->w;
+      cluster.h = expression[i].module->h;
+      stack[stack_top++] = cluster;
+    }
+    // Cutline
+    else {
+      assert(expression[i].cutline != UNDEFINED_CUTLINE);
+      assert(stack_top >= 2);
+
+      // Extract the top two clusters.
+      cluster_r = stack[--stack_top];
+      cluster_l = stack[--stack_top];
+      
+      // Create a new cluster.
+      cluster.beg = cluster_l.beg;
+      cluster.end = cluster_r.end;
+
+      // Horizontal cutline.
+      // - adjust the cluster's width and height.
+      // - adjust the coordinates of modules from the right cluster.
+      // - x coordinate doesn't change.
+      if(expression[i].cutline == H) {
+        for(j=cluster_r.beg; j<=cluster_r.end; ++j) {
+          if(expression[j].module == NULL) continue;
+          expression[j].module->lly += cluster_l.h;
+        }
+        cluster.w = cluster_l.w > cluster_r.w ? cluster_l.w : cluster_r.w;
+        cluster.h = cluster_l.h + cluster_r.h;
+      }
+      // Vertical cutline.
+      // - adjust the cluster's width and height.
+      // - adjust the coordinates of modules from the right cluster. 
+      // - y coordinate doesn't change.
+      else {
+        for(j=cluster_r.beg; j<=cluster_r.end; ++j) {
+          if(expression[j].module == NULL) continue;
+          expression[j].module->llx += cluster_l.w;
+        }
+        cluster.w = cluster_l.w + cluster_r.w;
+        cluster.h = cluster_l.h > cluster_r.h ? cluster_l.h : cluster_r.h;
+      }
+
+      // Insert the cluster into the stack.
+      stack[stack_top++] = cluster;
+    }
+  }
+
+  assert(stack_top == 1);
+
+  double area = (double)stack[stack_top - 1].w * (double)stack[stack_top - 1].h;
+  
+  free(stack);
+
+  return area;
+}
+
+// Function: is_valid_expression
+int is_valid_expression(expression_unit_t* expression, int N) {
+
+  // Initialize the stack by setting the variable stack_top as zero. The variable stack_top
+  // is also denoting the size of the stack.
+  int stack_top = 0;
+  cluster_t* stack = (cluster_t*)malloc(N*sizeof(cluster_t));
+
+  // Iterates through the expression
+  int i;
+  cluster_t cluster = {0, 0, 0, 0}, cluster_l, cluster_r;
+  for(i=0; i<N; ++i) {
+    // Module
+    if(expression[i].module != NULL) {
+      if(expression[i].cutline != UNDEFINED_CUTLINE) return 0;
+      stack[stack_top++] = cluster;
+    }
+    // Cutline
+    else {
+      if(expression[i].cutline == UNDEFINED_CUTLINE) return 0;
+      if(stack_top < 2) return 0;
+      cluster_r = stack[--stack_top];
+      cluster_l = stack[--stack_top];
+      stack[stack_top++] = cluster;
+    }
+  }
+  free(stack);
+  return stack_top == 1;
+}
+
+// Procedure: read_modules
+// Read the modules from a given input file and initialize all required data structure.
+void read_modules(const char file[]) {
+ 
+  int i;
+  FILE* ifp = fopen(file, "r");
+
+  assert(ifp != NULL);
+  
+  // Read the number of modules.
+  assert(fscanf(ifp, "%d", &num_modules) == 1);
+  assert(num_modules >= 2);
+  
+  // Allocate the memory.
+  modules = (module_t*)malloc(num_modules*sizeof(module_t));
+
+  // Read the modules one by one.
+  for(i=0; i<num_modules; ++i) {
+    assert(fscanf(ifp, "%d %d %d %d", &modules[i].idx, &modules[i].w, &modules[i].h, &modules[i].resource) == 4); 
+    modules[i].llx = 0;
+    modules[i].lly = 0;
+  }
+
+  fclose(ifp);
+}
+
+// Procedure: copy_expression
+void copy_expression(expression_unit_t* lhs, expression_unit_t* rhs, int N) {
+  memcpy(lhs, rhs, N*sizeof(expression_unit_t));
+}
+
+// Procedure: copy_modules
+void copy_modules(module_t* lhs, module_t* rhs, int N) {
+  memcpy(lhs, rhs, N*sizeof(module_t));
+}
+
+// Function: accept_proposal
+// Accept the proposed solution.
+int accept_proposal(double current, double proposal, double temperature) {
+  if(proposal < current) return 1;
+  if(temperature <= FROZEN) return 0;
+  double prob = exp(-(double)(proposal - current) / temperature);
+  return rand()/(double)RAND_MAX < prob;
+}
+
+// Function: get_rand_internal
+node_t* get_rand_internal(node_t** internals, int num_internals) {
+  return internals[rand()%num_internals]; 
+}
+
+// Function: get_rand_leave
+node_t* get_rand_leave(node_t** leaves, int num_leaves) {
+  return leaves[rand()%num_leaves]; 
+}
+
+// Function: get_random_node
+node_t* get_rand_node(node_t** internals, int num_internals, node_t** leaves, int num_leaves) {
+  if(rand()%2) {
+    return get_rand_leave(leaves, num_leaves);
+  }
+  return get_rand_internal(internals, num_internals);
+}
+
+// Function: optimize
+// Optimize the area of the floorplanner.
+double optimize(node_t *root, int num_nodes) {
+  
+  // Storage for leave and internal nodes.
+  int head = 0;
+  int tail = 0;
+  int num_leaves = 0;
+  int num_internals = 0;
+  node_t** queue = (node_t**)malloc(num_nodes*sizeof(node_t*));
+  node_t** leaves = (node_t**)malloc(num_modules*sizeof(node_t*));
+  node_t** internals = (node_t**)malloc((num_modules-1)*sizeof(node_t*));
+  node_t* u;
+  queue[tail++] = root;
+
+  while(tail - head) {
+    u = queue[head++];
+    
+    if(u->module) {
+      assert(u->cutline == UNDEFINED_CUTLINE);
+      leaves[num_leaves++] = u;
+    }
+    else {
+      assert(u->cutline != UNDEFINED_CUTLINE);
+      internals[num_internals++] = u;
+    }
+
+    if(u->left) queue[tail++] = u->left;
+    if(u->right) queue[tail++] = u->right;
+  }
+
+  assert(num_leaves == num_modules);
+  assert(num_internals == num_modules - 1);
+
+  // Simulated annealing.
+  srand(time(0));
+  expression_unit_t* best_expression = (expression_unit_t*)malloc(num_nodes*sizeof(expression_unit_t));
+  expression_unit_t* curr_expression = (expression_unit_t*)malloc(num_nodes*sizeof(expression_unit_t));
+  module_t* best_modules = (module_t*)malloc(num_modules*sizeof(module_t));
+  
+  int i, key;
+  double best_area, curr_area;
+  double temperature = 100.0;
+  node_t* a;
+  node_t* b;
+
+  // Initialization.
+  get_expression(root, num_nodes, best_expression);
+  best_area = packing(best_expression, num_nodes);
+  memcpy(best_modules, modules, num_modules*sizeof(module_t));
+
+  while(temperature > FROZEN) {
+    
+    // Generate the neighboring solution.
+    for(i=0; i<MAX_NUM_RAND_STEPS; ++i) {
+
+      key = rand()%4;
+      
+      switch(key) {
+
+        // Perform recut.
+        case 0:
+          recut(get_rand_internal(internals, num_internals));
+        break;
+        
+        // Perform rotate.
+        case 1:
+          rotate(get_rand_leave(leaves, num_leaves));
+        break;
+        
+        // Perform swap_module.
+        case 2:
+          do {
+            a = get_rand_leave(leaves, num_leaves);
+            b = get_rand_leave(leaves, num_leaves);
+          } while(a == b);
+          swap_module(a, b);
+        break;
+        
+        // Perform swap_topology.
+        default:
+          do {        
+            a = get_rand_node(internals, num_internals, leaves, num_leaves);
+            b = get_rand_node(internals, num_internals, leaves, num_leaves);
+          } while(is_in_subtree(a, b) || is_in_subtree(b, a));
+          swap_topology(a, b);
+        break;
+      }
+
+      // Evaluate the area.
+      get_expression(root, num_nodes, curr_expression);
+      curr_area = packing(curr_expression, num_nodes);
+      if(curr_area < best_area) {
+        best_area = curr_area;
+        copy_expression(best_expression, curr_expression, num_nodes);
+        memcpy(best_modules, modules, num_modules*sizeof(module_t));
+        //copy_modules(best_modules, modules, num_modules);
+      }
+    }
+    temperature *= TEMPERATURE_DECREASING_RATE;
+  }
+
+  memcpy(modules, best_modules, num_modules*sizeof(module_t));
+  best_area = packing(best_expression, num_nodes);
+ 
+  /*// Secondary optimization.
+  temperature = 100.0;
+  while(temperature > FROZEN) {
+    
+    // Start at a step.
+    copy_expression(curr_expression, best_expression, num_nodes);
+    copy_modules(modules, best_modules, num_modules);
+    
+    // Generate the neighboring solution.
+    for(i=0; i<MAX_NUM_RAND_STEPS; ++i) {
+
+      copy_expression(next_expression, curr_expression, num_nodes);
+
+      key = rand()%4;
+      
+      switch(key) {
+
+        // Perform recut.
+        case 0:
+          do{
+            j = rand() % num_nodes;
+          } while(next_expression[j].cutline == UNDEFINED_CUTLINE);
+          next_expression[j].cutline = next_expression[j].cutline == V ? H : V;
+        break;
+        
+        // Perform rotate.
+        case 1:
+          do{
+            j = rand() % num_nodes;
+          } while(next_expression[j].module == NULL);
+          next_expression[j].module->w = next_expression[j].module->w ^ next_expression[j].module->h;
+          next_expression[j].module->h = next_expression[j].module->w ^ next_expression[j].module->h;
+          next_expression[j].module->w = next_expression[j].module->w ^ next_expression[j].module->h;
+          
+        break;
+        
+        // Perform swap_module.
+        case 2:
+          do {
+            j = rand() % num_nodes;
+            k = rand() % num_nodes;
+          } while(j == k || next_expression[j].module == NULL || next_expression[k].module == NULL);
+          tmp = next_expression[k].module;
+          next_expression[k].module = next_expression[j].module;
+          next_expression[j].module = tmp;
+        break;
+        
+        // Perform swap_topology.
+        default:
+          do {
+            do{
+              j = rand() % num_nodes;
+              k = rand() % num_nodes;
+            } while(j == k);
+            e = next_expression[k];
+            next_expression[k] = next_expression[j];
+            next_expression[j] = e;
+          } while (!is_valid_expression(next_expression, num_nodes));
+        break;
+      }
+
+      // Evaluate the area.
+      curr_area = packing(curr_expression, num_nodes);
+      next_area = packing(next_expression, num_nodes);
+      if(accept_proposal(curr_area, next_area, temperature)){
+        if(next_area < best_area) {
+          best_area = next_area;
+          copy_expression(best_expression, next_expression, num_nodes);
+        }
+        copy_expression(curr_expression, next_expression, num_nodes);
+        curr_area = next_area;
+      }
+    }
+    temperature *= TEMPERATURE_DECREASING_RATE;
+  }
+
+  best_area = packing(best_expression, num_nodes);*/
+
+  
+  free(queue);
+  free(leaves);
+  free(internals);
+  free(best_expression);
+  free(curr_expression);
+  free(best_modules);
+
+  return best_area;
+}
+
+
