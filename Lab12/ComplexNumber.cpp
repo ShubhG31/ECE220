@@ -4,21 +4,35 @@
 ComplexNumber::ComplexNumber()
 {
     /* Your code here */
+    real_component=0;
+    imaginary_component=0;
 }
 
 ComplexNumber::ComplexNumber(double rval_real_component, double rval_imaginary_component)
 {
     /* Your code here */
+    real_component=rval_real_component;
+    imaginary_component=rval_imaginary_component;
+    magnitude=sqrt((rval_imaginary_component*rval_imaginary_component)+(rval_imaginary_component*rval_imaginary_component));
+    phase=calculate_phase(rval_real_component,rval_imaginary_component);
+    number_type=COMPLEX;
 }
 
 ComplexNumber::ComplexNumber( const ComplexNumber& other )
 {
     /* Your code here */
+    real_component=other.real_component;
+    imaginary_component=other.imaginary_component;
+    magnitude=other.magnitude;
+    phase=other.phase;
+    number_type=other.number_type;
 }
 
 void ComplexNumber::set_real_component (double rval)
 {
     /* Your code here */
+    real_component=rval;
+    return;
 }
 
 double ComplexNumber::get_real_component() const
